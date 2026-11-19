@@ -3,30 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PAWVERSE – White Pomeranian Edition | 3D Pet Care & VR</title>
+  <title>PAWVERSE – Where Every Paw Finds Love | 3D Pet Care & Virtual Reality</title>
 
   <!-- A-Frame 1.6.0 for WebXR and VR compatibility -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 
   <style>
     /* -------------------------------------------------------------
-       PAWVERSE LUXURY STYLING & HIGH-GRAPHICS GLASSMORPHISM UI
-       Palette: Pure Cloud White, Champagne Rose, Sky Indigo, Soft Emerald
+       PAWVERSE PREMIUM STYLING & RESPONSIVE UI
+       Palette: Warm Cream, Sky Blue, Pastel Sage, Soft Coral & Gold
        ------------------------------------------------------------- */
     :root {
-      --bg-cream: #FCFAF7;
+      --bg-cream: #FFFDF9;
       --primary: #FF7E5F;
       --primary-hover: #FEB47B;
-      --accent-pom: #FFFFFF;
-      --pom-pink: #FFCCD5;
       --accent-blue: #4EA8DE;
-      --accent-green: #52B788;
+      --accent-green: #56CFE1;
+      --pastel-green: #72EFDD;
       --text-dark: #2B2D42;
       --text-muted: #6C757D;
-      --card-bg: rgba(255, 255, 255, 0.94);
-      --card-border: rgba(255, 126, 95, 0.28);
-      --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-      --glow-pink: 0 0 20px rgba(255, 126, 95, 0.4);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 126, 95, 0.2);
+      --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.15);
+      --shadow-hover: 0 16px 42px rgba(255, 126, 95, 0.25);
       --font-main: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     }
 
@@ -43,21 +42,27 @@
       height: 100%;
       overflow: hidden;
       font-family: var(--font-main);
-      background-color: #0F172A;
+      background-color: #000;
       color: var(--text-dark);
     }
 
+    /* A-Frame scene container */
     #scene-container {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
     }
 
+    /* UI Overlay Layer */
     #ui-layer {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 10;
       pointer-events: none;
       display: flex;
@@ -67,8 +72,11 @@
       transition: all 0.3s ease;
     }
 
-    .interactive { pointer-events: auto !important; }
+    .interactive {
+      pointer-events: auto !important;
+    }
 
+    /* Top Navigation & Status Bar */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -80,35 +88,208 @@
     .brand-badge {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      padding: 10px 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px 18px;
       border-radius: 50px;
-      box-shadow: var(--glass-shadow);
-      border: 1.5px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--card-border);
+    }
+
+    .brand-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 2px 4px rgba(255, 126, 95, 0.4));
+      animation: gentle-pulse 2s infinite ease-in-out;
     }
 
     .brand-title {
       font-weight: 800;
-      font-size: 19px;
-      background: linear-gradient(135deg, #FF6B6B, #FFA07A, #FFD166);
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #FF7E5F, #FEB47B);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .pet-hud-card {
-      position: absolute;
-      top: 80px; left: 16px;
-      width: 320px;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border-radius: 26px;
-      padding: 18px;
-      box-shadow: var(--glass-shadow);
-      border: 2px solid rgba(255, 255, 255, 0.85);
+    .brand-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      display: block;
     }
 
+    /* Quick Action & Controls Pills */
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      color: var(--text-dark);
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Pet HUD Stats Card */
+    .pet-hud-card {
+      position: absolute;
+      top: 80px;
+      left: 16px;
+      width: 310px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      transition: all 0.35s ease;
+      transform-origin: top left;
+    }
+
+    .pet-hud-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pet-avatar-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFE8DF, #FFD1C4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 10px rgba(255, 126, 95, 0.25);
+    }
+
+    .pet-info h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pet-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .mood-pill {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      background: #E8F5E9;
+      color: #2E7D32;
+      margin-top: 2px;
+    }
+
+    /* Stat Bars */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .stat-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      width: 90px;
+      color: #495057;
+    }
+
+    .stat-bar-bg {
+      flex: 1;
+      height: 9px;
+      background: #E9ECEF;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.4s ease, background 0.4s ease;
+      width: 75%;
+    }
+
+    .stat-val {
+      width: 34px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6C757D;
+      margin-left: 6px;
+    }
+
+    /* Bonding / Affection Special Meter */
+    .bonding-meter-box {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(0,0,0,0.1);
+    }
+
+    .bonding-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #D81B60;
+    }
+
+    .bonding-bar-bg {
+      height: 12px;
+      background: #FCE4EC;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #F8BBD0;
+    }
+
+    .bonding-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FF4081, #FF80AB);
+      border-radius: 12px;
+      width: 40%;
+      transition: width 0.5s ease;
+    }
+
+    /* Bottom Action Dock */
     .bottom-dock {
       display: flex;
       justify-content: center;
@@ -123,130 +304,2681 @@
       align-items: center;
       gap: 4px;
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
       padding: 10px 14px;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--shadow-soft);
       transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      min-width: 72px;
+      min-width: 68px;
       color: var(--text-dark);
     }
 
     .action-btn:hover {
-      transform: translateY(-8px) scale(1.04);
-      box-shadow: 0 16px 36px rgba(255, 126, 95, 0.35);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
       border-color: var(--primary);
+    }
+
+    .action-btn.active {
+      background: linear-gradient(135deg, #FF7E5F, #FEB47B);
+      color: white;
+      border-color: transparent;
+    }
+
+    .action-btn.active span.btn-label {
+      color: white;
+    }
+
+    .btn-icon {
+      font-size: 22px;
+    }
+
+    .btn-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #495057;
+      letter-spacing: -0.2px;
+    }
+
+    /* Location Quick-Travel Pills */
+    .zone-pills {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .zone-pill {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      color: #495057;
+    }
+
+    .zone-pill:hover, .zone-pill.active {
+      background: #4EA8DE;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Floating Feedback Message & Toast */
+    #feedback-toast {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(43, 45, 66, 0.92);
+      backdrop-filter: blur(12px);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #feedback-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Modals & Dialogs (Adoption, Badges, Settings, Help) */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--bg-cream);
+      border-radius: 30px;
+      width: 100%;
+      max-width: 760px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      padding: 30px;
+      position: relative;
+      border: 2px solid rgba(255, 126, 95, 0.3);
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #F1F3F5;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #495057;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: #E9ECEF;
+      transform: rotate(90deg);
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FF7E5F, #FEB47B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .modal-header p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Adoption Grid */
+    .pet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .pet-card {
+      background: white;
+      border: 2px solid #E9ECEF;
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .pet-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(255, 126, 95, 0.15);
+    }
+
+    .pet-card.selected {
+      border-color: var(--primary);
+      background: #FFF5F2;
+      box-shadow: 0 10px 24px rgba(255, 126, 95, 0.25);
+    }
+
+    .pet-card-avatar {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    .pet-card-name {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 2px;
+    }
+
+    .pet-card-breed {
+      font-size: 12px;
+      color: var(--accent-blue);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .pet-card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .pet-traits {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .trait-tag {
+      font-size: 9px;
+      background: #F1F3F5;
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    /* Adoption form & confirmation */
+    .adopt-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: white;
+      padding: 16px;
+      border-radius: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+
+    .name-input-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .name-input-group label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6C757D;
+      text-transform: uppercase;
+    }
+
+    .name-input-group input {
+      padding: 10px 14px;
+      border: 1.5px solid #CED4DA;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .name-input-group input:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF7E5F, #FEB47B);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 126, 95, 0.35);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(255, 126, 95, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Badges & Rewards Grid */
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .badge-card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #E9ECEF;
+      position: relative;
+    }
+
+    .badge-card.unlocked {
+      border-color: #FFD166;
+      background: #FFFDF0;
+    }
+
+    .badge-card.locked {
+      opacity: 0.55;
+      filter: grayscale(0.8);
+    }
+
+    .badge-icon {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+
+    .badge-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .badge-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Controls Guide Overlay */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .control-box {
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #E9ECEF;
+    }
+
+    .control-box h4 {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .kbd {
+      background: #E9ECEF;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-weight: 700;
+      color: #495057;
+      border-bottom: 2px solid #CED4DA;
+    }
+
+    /* On-screen Quick Instructions Banner */
+    .desktop-hint {
+      position: absolute;
+      bottom: 84px;
+      left: 16px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #495057;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.06);
+      pointer-events: auto;
+    }
+
+    /* Start / Welcome Experience Screen */
+    #welcome-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #FFF4EE 0%, #FFE0D3 100%);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 24px;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #welcome-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-card {
+      max-width: 580px;
+      background: white;
+      padding: 40px 32px;
+      border-radius: 36px;
+      box-shadow: 0 25px 60px rgba(255, 126, 95, 0.25);
+      border: 3px solid rgba(255, 126, 95, 0.3);
+      animation: float-soft 4s ease-in-out infinite;
+    }
+
+    .welcome-logo-container {
+      margin-bottom: 16px;
+      font-size: 64px;
+      filter: drop-shadow(0 8px 16px rgba(255, 126, 95, 0.3));
+    }
+
+    .welcome-title {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #FF7E5F, #FEB47B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .welcome-tagline {
+      font-size: 16px;
+      color: #6C757D;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .welcome-quote {
+      font-size: 13px;
+      color: #495057;
+      background: #FFF8F5;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 26px;
+      text-align: left;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .welcome-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .vr-notice-pill {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6C757D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Keyframe animations */
+    @keyframes gentle-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    @keyframes float-soft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Mobile Responsive tweaks */
+    @media (max-width: 600px) {
+      .pet-hud-card {
+        width: calc(100% - 32px);
+        top: 70px;
+        left: 16px;
+      }
+      .desktop-hint {
+        display: none;
+      }
+      .bottom-dock {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- 3D SCENE & PROCEDURAL RIG -->
+
+  <!-- =============================================================
+       WELCOME & ONBOARDING SPLASH SCREEN
+       ============================================================= -->
+  <div id="welcome-screen">
+    <div class="welcome-card">
+      <div class="welcome-logo-container">🐾❤️✨</div>
+      <h1 class="welcome-title">PAWVERSE</h1>
+      <p class="welcome-tagline">Where Every Paw Finds Love</p>
+
+      <div class="welcome-quote">
+        “Animals cannot express their needs in words, but they can express them through their actions. Give them care, patience, kindness, and unconditional love.”
+      </div>
+
+      <div class="welcome-btns">
+        <button id="btn-start-desktop" class="btn-primary" onclick="window.PawverseApp.startExperience(false)">
+          <span>🚀</span> Enter Pawverse (Desktop 3D)
+        </button>
+        <button id="btn-start-vr" class="btn-primary" style="background: linear-gradient(135deg, #4EA8DE, #56CFE1);" onclick="window.PawverseApp.startExperience(true)">
+          <span>🥽</span> Meta Quest 3S VR Mode
+        </button>
+      </div>
+
+      <div class="vr-notice-pill">
+        <span>🎮</span> Optimized for Meta Quest 3S (Controllers + Hand Interactions) &amp; Windows Desktop (WASD + Mouse)
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       2D / WEBXR USER INTERFACE LAYER
+       ============================================================= -->
+  <div id="ui-layer">
+
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+      <div class="brand-badge interactive">
+        <span class="brand-icon">🐾</span>
+        <div>
+          <div class="brand-title">PAWVERSE</div>
+          <span class="brand-tagline">Where Every Paw Finds Love</span>
+        </div>
+      </div>
+
+      <!-- Quick Travel Locations -->
+      <div class="zone-pills interactive">
+        <button class="zone-pill active" onclick="window.PawverseApp.teleportTo('living-room')">🛋️ Living Room</button>
+        <button class="zone-pill" onclick="window.PawverseApp.teleportTo('garden')">🌳 Garden Playground</button>
+        <button class="zone-pill" onclick="window.PawverseApp.teleportTo('food-station')">🥣 Dining Station</button>
+        <button class="zone-pill" onclick="window.PawverseApp.teleportTo('bath-station')">🛁 Bath &amp; Spa</button>
+        <button class="zone-pill" onclick="window.PawverseApp.teleportTo('vet-corner')">🩺 Vet Clinic</button>
+        <button class="zone-pill" onclick="window.PawverseApp.teleportTo('bed-area')">🛏️ Pet Bed</button>
+      </div>
+
+      <!-- Utility Icons -->
+      <div class="top-actions interactive">
+        <button class="icon-btn" title="Pet Adoption Centre" onclick="window.PawverseApp.openModal('adoption-modal')">🏠</button>
+        <button class="icon-btn" title="Care Badges &amp; Love Points" onclick="window.PawverseApp.openModal('badges-modal')">🏆</button>
+        <button class="icon-btn" title="Accessories Wardrobe" onclick="window.PawverseApp.openModal('wardrobe-modal')">🎀</button>
+        <button class="icon-btn" title="Controls Guide" onclick="window.PawverseApp.openModal('controls-modal')">❓</button>
+        <button id="btn-audio-toggle" class="icon-btn" title="Toggle Sound" onclick="window.PawverseSound.toggleMute()">🔊</button>
+      </div>
+    </div>
+
+    <!-- Active Pet Status HUD -->
+    <div id="pet-hud" class="pet-hud-card interactive">
+      <div class="pet-hud-header">
+        <div id="hud-pet-avatar" class="pet-avatar-circle">🐕</div>
+        <div class="pet-info">
+          <h3 id="hud-pet-name">Buddy <span id="hud-gender-symbol">♂️</span></h3>
+          <p id="hud-pet-breed">Golden Retriever • 8 Months</p>
+          <span id="hud-pet-mood" class="mood-pill">😊 Feeling Loved &amp; Happy</span>
+        </div>
+      </div>
+
+      <!-- Vital Meters -->
+      <div class="stat-row">
+        <span class="stat-label">❤️ Happiness</span>
+        <div class="stat-bar-bg">
+          <div id="bar-happiness" class="stat-bar-fill" style="width: 85%; background: #FF5E7E;"></div>
+        </div>
+        <span id="val-happiness" class="stat-val">85%</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">🍖 Hunger</span>
+        <div class="stat-bar-bg">
+          <div id="bar-hunger" class="stat-bar-fill" style="width: 70%; background: #FFA94D;"></div>
+        </div>
+        <span id="val-hunger" class="stat-val">70%</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">💧 Hydration</span>
+        <div class="stat-bar-bg">
+          <div id="bar-thirst" class="stat-bar-fill" style="width: 80%; background: #4DABF7;"></div>
+        </div>
+        <span id="val-thirst" class="stat-val">80%</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">⚡ Energy</span>
+        <div class="stat-bar-bg">
+          <div id="bar-energy" class="stat-bar-fill" style="width: 90%; background: #FFD43B;"></div>
+        </div>
+        <span id="val-energy" class="stat-val">90%</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">✨ Cleanliness</span>
+        <div class="stat-bar-bg">
+          <div id="bar-cleanliness" class="stat-bar-fill" style="width: 75%; background: #69DB7C;"></div>
+        </div>
+        <span id="val-cleanliness" class="stat-val">75%</span>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">🩺 Health</span>
+        <div class="stat-bar-bg">
+          <div id="bar-health" class="stat-bar-fill" style="width: 95%; background: #38D9A9;"></div>
+        </div>
+        <span id="val-health" class="stat-val">95%</span>
+      </div>
+
+      <!-- Emotional Bonding System -->
+      <div class="bonding-meter-box">
+        <div class="bonding-header">
+          <span>💖 Emotional Bond</span>
+          <span id="hud-bond-tier">Best Friend (Tier 4)</span>
+        </div>
+        <div class="bonding-bar-bg">
+          <div id="bar-bond" class="bonding-bar-fill" style="width: 72%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onscreen Controls Hint (Desktop) -->
+    <div class="desktop-hint">
+      <span>⌨️ <b>W,A,S,D</b>: Walk | <b>Mouse</b>: Look | <b>Click/E</b>: Interact | <b>F</b>: Feed | <b>G</b>: Pet | <b>Space</b>: Fetch Ball</span>
+    </div>
+
+    <!-- Bottom Action Dock (Interactive Pet Care) -->
+    <div class="bottom-dock interactive">
+      <button class="action-btn" title="Feed fresh kibble and treats" onclick="window.PawverseApp.doCareAction('feed')">
+        <span class="btn-icon">🍖</span>
+        <span class="btn-label">Feed Bowl</span>
+      </button>
+
+      <button class="action-btn" title="Pour fresh cool water" onclick="window.PawverseApp.doCareAction('drink')">
+        <span class="btn-icon">💧</span>
+        <span class="btn-label">Fresh Water</span>
+      </button>
+
+      <button class="action-btn" title="Gentle warm bath with bubbles" onclick="window.PawverseApp.doCareAction('bath')">
+        <span class="btn-icon">🛁</span>
+        <span class="btn-label">Warm Bath</span>
+      </button>
+
+      <button class="action-btn" title="Brush and groom fur" onclick="window.PawverseApp.doCareAction('groom')">
+        <span class="btn-icon">🪮</span>
+        <span class="btn-label">Fur Brush</span>
+      </button>
+
+      <button class="action-btn" title="Pet and give warm affection" onclick="window.PawverseApp.doCareAction('pet')">
+        <span class="btn-icon">👋</span>
+        <span class="btn-label">Pet &amp; Hug</span>
+      </button>
+
+      <button class="action-btn" title="Throw tennis ball for fetch" onclick="window.PawverseApp.doCareAction('fetch')">
+        <span class="btn-icon">🎾</span>
+        <span class="btn-label">Play Fetch</span>
+      </button>
+
+      <button class="action-btn" title="Teach sit, roll, spin tricks" onclick="window.PawverseApp.openModal('tricks-modal')">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-label">Teach Tricks</span>
+      </button>
+
+      <button class="action-btn" title="Rest in cozy pet bed" onclick="window.PawverseApp.doCareAction('sleep')">
+        <span class="btn-icon">💤</span>
+        <span class="btn-label">Sleep Bed</span>
+      </button>
+
+      <button class="action-btn" title="Veterinary health checkup" onclick="window.PawverseApp.doCareAction('vet')">
+        <span class="btn-icon">🩺</span>
+        <span class="btn-label">Vet Check</span>
+      </button>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div id="feedback-toast">
+      <span id="toast-icon">❤️</span>
+      <span id="toast-text">Buddy loved being petted!</span>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       MODALS: ADOPTION, BADGES, ACCESSORIES, TRICKS, CONTROLS
+       ============================================================= -->
+
+  <!-- 1. Adoption Modal -->
+  <div id="adoption-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="window.PawverseApp.closeModal('adoption-modal')">✕</button>
+      <div class="modal-header">
+        <h2>🐾 Pet Adoption Centre</h2>
+        <p>Give a loving forever home to a companion who will love you unconditionally.</p>
+      </div>
+
+      <div class="pet-grid" id="adoption-pet-grid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <div class="adopt-action-bar">
+        <div class="name-input-group">
+          <label for="input-adopt-name">Give Your Companion A Name</label>
+          <input type="text" id="input-adopt-name" placeholder="Enter pet name (e.g. Sunny, Milo, Luna)..." maxlength="16">
+        </div>
+        <button class="btn-primary" onclick="window.PawverseApp.confirmAdoption()">
+          <span>🏠</span> Welcome Home!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Badges & Love Progression Modal -->
+  <div id="badges-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="window.PawverseApp.closeModal('badges-modal')">✕</button>
+      <div class="modal-header">
+        <h2>🏆 Love Points &amp; Care Badges</h2>
+        <p>Your kindness and patience unlock milestones and rewards.</p>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <span style="font-size: 28px; font-weight: 800; color: #FF7E5F;" id="modal-love-points">💖 120 Love Points</span>
+      </div>
+
+      <div class="badges-grid" id="badges-grid">
+        <!-- Dynamically rendered badges -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Wardrobe & Accessories Modal -->
+  <div id="wardrobe-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="window.PawverseApp.closeModal('wardrobe-modal')">✕</button>
+      <div class="modal-header">
+        <h2>🎀 Pet Accessories &amp; Wardrobe</h2>
+        <p>Dress your beloved pet in charming accessories earned through bonding.</p>
+      </div>
+
+      <div class="badges-grid" id="wardrobe-grid">
+        <!-- Accessories list -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Tricks Training Modal -->
+  <div id="tricks-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="window.PawverseApp.closeModal('tricks-modal')">✕</button>
+      <div class="modal-header">
+        <h2>⭐ Positive Reinforcement Trick Academy</h2>
+        <p>Train your pet with love, praise, and gentle guidance!</p>
+      </div>
+
+      <div class="badges-grid">
+        <div class="badge-card unlocked" style="cursor: pointer;" onclick="window.PawverseApp.teachTrick('sit')">
+          <div class="badge-icon">🐕</div>
+          <div class="badge-title">1. "Sit!"</div>
+          <div class="badge-desc">Pet sits nicely and looks up with wagging tail.</div>
+        </div>
+
+        <div class="badge-card unlocked" style="cursor: pointer;" onclick="window.PawverseApp.teachTrick('down')">
+          <div class="badge-icon">🛌</div>
+          <div class="badge-title">2. "Lie Down!"</div>
+          <div class="badge-desc">Pet rests paws forward and relaxes peacefully.</div>
+        </div>
+
+        <div class="badge-card unlocked" style="cursor: pointer;" onclick="window.PawverseApp.teachTrick('spin')">
+          <div class="badge-icon">🌀</div>
+          <div class="badge-title">3. "Spin Around!"</div>
+          <div class="badge-desc">Pet does an excited pirouette circle of joy.</div>
+        </div>
+
+        <div class="badge-card unlocked" style="cursor: pointer;" onclick="window.PawverseApp.teachTrick('rollover')">
+          <div class="badge-icon">🤸</div>
+          <div class="badge-title">4. "Roll Over!"</div>
+          <div class="badge-desc">Playful roll from back to belly with soft giggles.</div>
+        </div>
+
+        <div class="badge-card unlocked" style="cursor: pointer;" onclick="window.PawverseApp.teachTrick('speak')">
+          <div class="badge-icon">🗣️</div>
+          <div class="badge-title">5. "Speak / Bark!"</div>
+          <div class="badge-desc">Pet lets out a cheerful, friendly greeting yip!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Controls & VR Guide Modal -->
+  <div id="controls-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="window.PawverseApp.closeModal('controls-modal')">✕</button>
+      <div class="modal-header">
+        <h2>🎮 Controls &amp; VR Experience Guide</h2>
+        <p>Seamlessly navigate Pawverse on Windows Desktop PC or Meta Quest 3S VR.</p>
+      </div>
+
+      <div class="controls-grid">
+        <div class="control-box">
+          <h4>🥽 Meta Quest 3S VR Controls</h4>
+          <div class="control-item"><span>Left Joystick</span> <span class="kbd">Smooth Locomotion</span></div>
+          <div class="control-item"><span>Right Joystick</span> <span class="kbd">Snap Turn</span></div>
+          <div class="control-item"><span>Trigger Button</span> <span class="kbd">Pet / Interact / Select</span></div>
+          <div class="control-item"><span>Grip Button</span> <span class="kbd">Grab Ball &amp; Toys</span></div>
+          <div class="control-item"><span>Enter VR</span> <span class="kbd">Click Goggles Icon</span></div>
+        </div>
+
+        <div class="control-box">
+          <h4>💻 Windows Desktop Controls</h4>
+          <div class="control-item"><span>Move</span> <span class="kbd">W / A / S / D</span></div>
+          <div class="control-item"><span>Look Around</span> <span class="kbd">Mouse Drag</span></div>
+          <div class="control-item"><span>Interact</span> <span class="kbd">Left Click / E</span></div>
+          <div class="control-item"><span>Feed Meal</span> <span class="kbd">F</span></div>
+          <div class="control-item"><span>Pet / Caress</span> <span class="kbd">G</span></div>
+          <div class="control-item"><span>Fetch Ball</span> <span class="kbd">Space</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================================
+       A-FRAME 3D SCENE & PROCEDURAL PET RIGGING
+       ============================================================= -->
   <div id="scene-container">
     <a-scene 
       id="main-scene" 
-      background="color: #CBE3FB" 
-      renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true; highRefreshRate: true; toneMapping: ACESFilmic"
+      background="color: #BAE6FD" 
+      renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true; highRefreshRate: true"
       webxr="optionalFeatures: hit-test, local-floor">
 
-      <!-- High-End Lighting -->
-      <a-entity light="type: directional; color: #FFFBF0; intensity: 1.45; castShadow: true" position="15 28 12"></a-entity>
-      <a-entity light="type: ambient; color: #E8F4FD; intensity: 0.95"></a-entity>
-      <a-entity light="type: directional; color: #FFE3E8; intensity: 0.4" position="-12 18 -10"></a-entity>
-      <a-entity id="fireplace-light" light="type: point; color: #FFA94D; intensity: 1.8; distance: 14" position="-4 1.2 -4"></a-entity>
+      <!-- Assets Manager -->
+      <a-assets timeout="4000">
+        <!-- Procedural textures and materials initialized via script -->
+      </a-assets>
 
-      <a-sky id="paw-sky" color="#CBE3FB"></a-sky>
+      <!-- =========================================================
+           LIGHTING & ATMOSPHERE
+           ========================================================= -->
+      <!-- Soft Warm Sun Directional Light -->
+      <a-entity light="type: directional; color: #FFF8E7; intensity: 1.25; castShadow: true" position="15 25 10"></a-entity>
+      <!-- Ambient Skylight -->
+      <a-entity light="type: ambient; color: #E0F2FE; intensity: 0.85"></a-entity>
+      <!-- Interior Living Room Warm Fireplace Point Light -->
+      <a-entity id="fireplace-light" light="type: point; color: #FFA94D; intensity: 1.5; distance: 12" position="-4 1.2 -4"></a-entity>
 
-      <!-- Camera Rig with Quest 3S Controllers and Desktop Controls -->
+      <!-- Sky Dome with gentle sunny gradient -->
+      <a-sky id="paw-sky" color="#BAE6FD"></a-sky>
+
+      <!-- =========================================================
+           CAMERA RIG & PLAYER (Desktop & Meta Quest 3S Controllers)
+           ========================================================= -->
       <a-entity id="rig" position="0 0 2">
+        <!-- Camera (Desktop Mouse Look + Headset View) -->
         <a-camera id="player-camera" position="0 1.6 0" look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 20">
-          <a-entity id="desktop-cursor" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable; far: 30"></a-entity>
+          <!-- Laser Cursor for desktop interaction -->
+          <a-entity 
+            id="desktop-cursor"
+            cursor="fuse: false; rayOrigin: mouse"
+            raycaster="objects: .clickable; far: 30">
+          </a-entity>
         </a-camera>
-        <a-entity id="left-hand" laser-controls="hand: left" quest-locomotion raycaster="objects: .clickable; far: 15; lineColor: #FF7E5F"></a-entity>
-        <a-entity id="right-hand" laser-controls="hand: right" quest-locomotion raycaster="objects: .clickable; far: 15; lineColor: #4EA8DE"></a-entity>
+
+        <!-- Meta Quest 3S Left Hand Controller -->
+        <a-entity 
+          id="left-hand" 
+          laser-controls="hand: left" 
+          raycaster="objects: .clickable; far: 15; lineColor: #FF7E5F; lineOpacity: 0.8">
+        </a-entity>
+
+        <!-- Meta Quest 3S Right Hand Controller -->
+        <a-entity 
+          id="right-hand" 
+          laser-controls="hand: right" 
+          raycaster="objects: .clickable; far: 15; lineColor: #4EA8DE; lineOpacity: 0.8">
+        </a-entity>
       </a-entity>
 
-      <!-- Environment: Oak Parquet Living Room, Garden, Stations -->
-      <a-plane position="0 -0.01 0" rotation="-90 0 0" width="80" height="80" color="#7BC8A4"></a-plane>
-      <a-plane position="-3 0.01 -3" rotation="-90 0 0" width="14" height="14" color="#DDA15E"></a-plane>
-      <a-circle position="-3 0.025 -3" rotation="-90 0 0" radius="3.6" color="#FFF8F0"></a-circle>
+      <!-- =========================================================
+           ENVIRONMENT ARCHITECTURE: THE 3D PET HOME & ZONES
+           ========================================================= -->
 
-      <!-- The Procedural White Pomeranian Companion -->
-      <a-entity id="pet-companion" position="0 0 -1" class="clickable" onclick="window.PawverseApp.doCareAction('cuddle')"></a-entity>
+      <!-- Main Floor Ground (Living Area Wood & Garden Grass) -->
+      <!-- Outdoor Grass Plane -->
+      <a-plane position="0 -0.01 0" rotation="-90 0 0" width="80" height="80" color="#7BC8A4" material="roughness: 0.9; metalness: 0.05"></a-plane>
 
-      <!-- Interactive Fetch Tennis Ball -->
-      <a-sphere id="interactive-ball" class="clickable" onclick="window.PawverseApp.throwBall()" position="0 0.25 1" radius="0.22" color="#CCFF00" shadow></a-sphere>
+      <!-- Indoor Living Room Wooden Floor -->
+      <a-plane position="-3 0.01 -3" rotation="-90 0 0" width="14" height="14" color="#D4A373" material="roughness: 0.6"></a-plane>
 
-      <!-- Particle Container -->
-      <a-entity id="particles-container"></a-entity>
+      <!-- Living Room Cozy Carpet Rug -->
+      <a-circle position="-3 0.02 -3" rotation="-90 0 0" radius="3.5" color="#FFF1E6" material="roughness: 0.8"></a-circle>
+
+      <!-- Living Room Walls (Warm Cream Modern Aesthetic) -->
+      <a-box position="-3 3 -10" width="14" height="6" depth="0.3" color="#FAEDCD"></a-box>
+      <a-box position="-10 3 -3" rotation="0 90 0" width="14" height="6" depth="0.3" color="#FAEDCD"></a-box>
+
+      <!-- Wall Art & Inspirational Posters -->
+      <a-box position="-3 3.5 -9.8" width="3.2" height="1.8" depth="0.08" color="#333333">
+        <a-text value="PAWVERSE HOME\nWhere Love Lives" align="center" color="#FFFFFF" position="0 0 0.06" width="6"></a-text>
+      </a-box>
+
+      <!-- Fireplace Mantle & Warm Hearth -->
+      <a-box position="-4 1 -9.7" width="2.6" height="2" depth="0.5" color="#DDBEA9"></a-box>
+      <a-box position="-4 0.4 -9.5" width="1.6" height="1" depth="0.4" color="#2B2D42"></a-box>
+      <!-- Fireplace Embers (animated pulsing flame) -->
+      <a-sphere id="fire-ember" position="-4 0.3 -9.4" radius="0.35" color="#FF6B35" material="emissive: #FF6B35; emissiveIntensity: 0.8"></a-sphere>
+
+      <!-- Modern Cozy Sofa -->
+      <a-entity position="-7 0 -3" rotation="0 90 0">
+        <!-- Sofa Base -->
+        <a-box position="0 0.45 0" width="3.4" height="0.5" depth="1.2" color="#6D6875"></a-box>
+        <!-- Sofa Backrest -->
+        <a-box position="0 1.1 -0.45" width="3.4" height="0.8" depth="0.3" color="#5E5866"></a-box>
+        <!-- Sofa Armrests -->
+        <a-box position="-1.75 0.7 0" width="0.3" height="0.6" depth="1.2" color="#5E5866"></a-box>
+        <a-box position="1.75 0.7 0" width="0.3" height="0.6" depth="1.2" color="#5E5866"></a-box>
+        <!-- Decorative Cushions -->
+        <a-box position="-0.9 0.8 -0.2" rotation="10 15 0" width="0.6" height="0.6" depth="0.2" color="#FFB4A2"></a-box>
+        <a-box position="0.9 0.8 -0.2" rotation="10 -15 0" width="0.6" height="0.6" depth="0.2" color="#E5989B"></a-box>
+      </a-entity>
+
+      <!-- Coffee Table with Pet Care Books -->
+      <a-box position="-3 0.35 -3" width="1.8" height="0.4" depth="1.0" color="#B7B7A4"></a-box>
+      <a-box position="-3 0.58 -3" width="0.5" height="0.06" depth="0.4" color="#E76F51"></a-box>
+
+      <!-- =========================================================
+           ZONE 1: PET SLEEPING AREA (Plush Cushion Bed & Night Lamp)
+           ========================================================= -->
+      <a-entity id="zone-bed" position="-7 0 -7">
+        <!-- Pet Donut Cushion Bed -->
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.15 0" radius="1.3" height="0.3" color="#FFCDB2"></a-cylinder>
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.18 0" radius="1.0" height="0.2" color="#FFB4A2"></a-cylinder>
+        <!-- Soft Pillow -->
+        <a-sphere position="0.5 0.25 0" radius="0.35" scale="1 0.4 1" color="#FFFFFF"></a-sphere>
+        <a-text value="🛏️ Cozy Pet Bed" align="center" position="0 1.2 0" color="#495057" width="4"></a-text>
+        <!-- Night Lamp -->
+        <a-cylinder position="-1.5 0.6 0" radius="0.08" height="1.2" color="#D4A373"></a-cylinder>
+        <a-cone position="-1.5 1.3 0" radius-bottom="0.4" radius-top="0.2" height="0.4" color="#FFE8D6"></a-cone>
+      </a-entity>
+
+      <!-- =========================================================
+           ZONE 2: FOOD & WATER DINING STATION
+           ========================================================= -->
+      <a-entity id="zone-dining" position="1.5 0 -5">
+        <!-- Station Tray Mat -->
+        <a-plane position="0 0.02 0" rotation="-90 0 0" width="2.4" height="1.4" color="#A8DADC"></a-plane>
+        
+        <!-- Food Bowl (Clickable) -->
+        <a-cylinder id="bowl-food" class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.6 0.15 0" radius="0.45" height="0.25" color="#E63946">
+          <!-- Kibble food contents -->
+          <a-sphere id="food-pellets" position="0 0.08 0" radius="0.38" scale="1 0.35 1" color="#8B5A2B"></a-sphere>
+        </a-cylinder>
+        <a-text value="🍖 Food Bowl" align="center" position="-0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
+
+        <!-- Fresh Water Fountain Bowl (Clickable) -->
+        <a-cylinder id="bowl-water" class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0.6 0.15 0" radius="0.45" height="0.25" color="#457B9D">
+          <!-- Water surface -->
+          <a-cylinder id="water-surface" position="0 0.08 0" radius="0.4" height="0.05" color="#A2D2FF" material="opacity: 0.85; transparent: true"></a-cylinder>
+        </a-cylinder>
+        <a-text value="💧 Fresh Water" align="center" position="0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
+      </a-entity>
+
+      <!-- =========================================================
+           ZONE 3: GROOMING & BATH SPA STATION
+           ========================================================= -->
+      <a-entity id="zone-bath" position="6 0 -4">
+        <!-- Bathtub Structure -->
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="0 0.5 0" width="2.4" height="0.8" depth="1.6" color="#FFFFFF" material="roughness: 0.3"></a-box>
+        <!-- Tub Interior Water Surface -->
+        <a-plane position="0 0.7 0" rotation="-90 0 0" width="2.0" height="1.2" color="#72EFDD" material="opacity: 0.75; transparent: true"></a-plane>
+        <!-- Shower Head Stand -->
+        <a-cylinder position="1.1 1.2 0" radius="0.05" height="1.6" color="#CED4DA"></a-cylinder>
+        <a-sphere position="0.9 2.0 0" radius="0.2" color="#CED4DA"></a-sphere>
+        <!-- Grooming Brush Stand -->
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 0.5 0" width="0.6" height="0.8" depth="0.6" color="#DEE2E6"></a-box>
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 1.0 0" radius="0.1" height="0.4" rotation="0 0 45" color="#FF7E5F"></a-cylinder>
+        <a-text value="🛁 Bath &amp; Grooming Spa" align="center" position="0 2.2 0" color="#2B2D42" width="4.5"></a-text>
+      </a-entity>
+
+      <!-- =========================================================
+           ZONE 4: VETERINARY HEALTH CLINIC CORNER
+           ========================================================= -->
+      <a-entity id="zone-vet" position="7 0 3">
+        <!-- Examination Medical Table -->
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 0.6 0" width="2.6" height="1.0" depth="1.5" color="#F8F9FA"></a-box>
+        <!-- Medical Cross Emblems -->
+        <a-box position="0 0.6 0.76" width="0.6" height="0.2" depth="0.02" color="#E63946"></a-box>
+        <a-box position="0 0.6 0.76" width="0.2" height="0.6" depth="0.02" color="#E63946"></a-box>
+        <!-- Medical Scanner Monitor -->
+        <a-box position="1.0 1.4 0" width="0.8" height="0.6" depth="0.1" color="#343A40"></a-box>
+        <a-plane position="1.0 1.4 0.06" width="0.7" height="0.5" color="#20C997">
+          <a-text value="VET SCANNER\nHEALTH: OPTIMAL" align="center" color="#FFFFFF" position="0 0 0.01" width="1.8"></a-text>
+        </a-plane>
+        <a-text value="🩺 Vet Corner" align="center" position="0 1.8 0" color="#2B2D42" width="4.0"></a-text>
+      </a-entity>
+
+      <!-- =========================================================
+           ZONE 5: OUTDOOR GARDEN & PLAYGROUND (Fetch, Obstacles, Trees)
+           ========================================================= -->
+      <a-entity id="zone-garden" position="0 0 10">
+        <!-- White Picket Fence Enclosure -->
+        <!-- Front Fence Posts -->
+        <a-box position="-8 0.6 8" width="0.1" height="1.2" depth="0.1" color="#FFFFFF"></a-box>
+        <a-box position="0 0.6 8" width="16" height="0.15" depth="0.05" color="#FFFFFF"></a-box>
+        <a-box position="0 0.3 8" width="16" height="0.15" depth="0.05" color="#FFFFFF"></a-box>
+        <a-box position="8 0.6 8" width="0.1" height="1.2" depth="0.1" color="#FFFFFF"></a-box>
+
+        <!-- Agility Training Hurdles -->
+        <a-entity position="-4 0 4">
+          <a-cylinder position="-1 0.4 0" radius="0.06" height="0.8" color="#FF7E5F"></a-cylinder>
+          <a-cylinder position="1 0.4 0" radius="0.06" height="0.8" color="#FF7E5F"></a-cylinder>
+          <a-cylinder position="0 0.6 0" radius="0.05" height="2.0" rotation="0 0 90" color="#FFD166"></a-cylinder>
+          <a-text value="Agility Jump" align="center" position="0 1.1 0" color="#495057" width="3"></a-text>
+        </a-entity>
+
+        <!-- Agility Play Tunnel -->
+        <a-entity position="4 0 5" rotation="0 30 0">
+          <a-cylinder position="0 0.6 0" radius="0.7" height="2.4" open-ended="true" rotation="90 0 0" color="#06D6A0" material="side: double"></a-cylinder>
+          <a-text value="Play Tunnel" align="center" position="0 1.6 0" color="#495057" width="3"></a-text>
+        </a-entity>
+
+        <!-- Procedural Beautiful Garden Trees -->
+        <!-- Tree 1 -->
+        <a-entity position="-10 0 6">
+          <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
+          <a-sphere position="0 3.5 0" radius="1.8" color="#40916C"></a-sphere>
+          <a-sphere position="0.5 4.3 0.3" radius="1.3" color="#52B788"></a-sphere>
+        </a-entity>
+        <!-- Tree 2 -->
+        <a-entity position="10 0 6">
+          <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
+          <a-sphere position="0 3.5 0" radius="1.8" color="#40916C"></a-sphere>
+          <a-sphere position="-0.4 4.2 -0.2" radius="1.3" color="#52B788"></a-sphere>
+        </a-entity>
+        <!-- Tree 3 -->
+        <a-entity position="-12 0 -2">
+          <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
+          <a-sphere position="0 3.5 0" radius="1.8" color="#2D6A4F"></a-sphere>
+        </a-entity>
+
+        <!-- Colorful Flower Patches -->
+        <a-entity position="-3 0 2">
+          <a-cylinder position="0 0.1 0" radius="0.04" height="0.25" color="#52B788"></a-cylinder>
+          <a-sphere position="0 0.25 0" radius="0.12" color="#FF4D6D"></a-sphere>
+          <a-cylinder position="0.3 0.1 0.2" radius="0.04" height="0.2" color="#52B788"></a-cylinder>
+          <a-sphere position="0.3 0.22 0.2" radius="0.1" color="#FFD166"></a-sphere>
+          <a-cylinder position="-0.3 0.1 0.1" radius="0.04" height="0.22" color="#52B788"></a-cylinder>
+          <a-sphere position="-0.3 0.24 0.1" radius="0.11" color="#7209B7"></a-sphere>
+        </a-entity>
+      </a-entity>
+
+      <!-- =========================================================
+           INTERACTIVE TOY: FETCH TENNIS BALL (Physics Arc & Chase)
+           ========================================================= -->
+      <a-sphere 
+        id="interactive-ball" 
+        class="clickable" 
+        onclick="window.PawverseApp.throwBall()"
+        position="0 0.25 1" 
+        radius="0.22" 
+        color="#CCFF00" 
+        material="roughness: 0.5" 
+        shadow>
+      </a-sphere>
+
+      <!-- =========================================================
+           FLOATING PARTICLE EFFECT SYSTEMS (Procedural Hearts/Bubbles/Stars)
+           ========================================================= -->
+      <a-entity id="particles-container" position="0 0 0"></a-entity>
+
+      <!-- =========================================================
+           THE DYNAMIC PROCEDURAL 3D PET RIG
+           ========================================================= -->
+      <a-entity id="pet-companion" position="0 0 -1" rotation="0 0 0" class="clickable" onclick="window.PawverseApp.doCareAction('pet')">
+        <!-- The procedural model mesh is assembled inside the PetRig component -->
+      </a-entity>
+
     </a-scene>
   </div>
 
+  <!-- =============================================================
+       ALL JAVASCRIPT LOGIC (Self-Contained: Audio, AI, Rig, UI, WebXR)
+       ============================================================= -->
   <script>
-    // 1. Procedural Web Audio Synthesizer (Pomeranian Yips, Chords, Purrs)
+    /* ===========================================================
+       1. PROCEDURAL SOUND SYNTHESIZER (Web Audio API)
+       100% self-contained: Barks, meows, chomps, splashes, purrs, chords
+       =========================================================== */
     class PawverseAudioEngine {
       constructor() {
         this.ctx = null;
         this.isMuted = false;
+        this.musicInterval = null;
+        this.musicPlaying = false;
       }
+
       init() {
         if (!this.ctx) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           this.ctx = new AudioContext();
         }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
       }
-      playPomBark() {
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        const btn = document.getElementById('btn-audio-toggle');
+        if (btn) btn.innerHTML = this.isMuted ? '🔇' : '🔊';
+        if (this.isMuted) {
+          this.stopRelaxingMusic();
+        } else {
+          this.startRelaxingMusic();
+        }
+        window.PawverseApp.showToast(this.isMuted ? 'Sound Muted' : 'Sound Enabled', '🔊');
+      }
+
+      // Play soft harmonic tone
+      playTone(freq, type = 'sine', duration = 0.25, gainVal = 0.15) {
         if (this.isMuted) return;
         this.init();
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(620, now);
-        osc.frequency.exponentialRampToValueAtTime(260, now + 0.14);
-        gain.gain.setValueAtTime(0.32, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.14);
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {
+          console.warn('Audio error:', e);
+        }
+      }
+
+      // Cheerful dog bark
+      playBark() {
+        if (this.isMuted) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.18);
+
+          // Second quick echo yip
+          setTimeout(() => {
+            if (this.isMuted) return;
+            const now2 = this.ctx.currentTime;
+            const osc2 = this.ctx.createOscillator();
+            const gain2 = this.ctx.createGain();
+            osc2.type = 'sawtooth';
+            osc2.frequency.setValueAtTime(420, now2);
+            osc2.frequency.exponentialRampToValueAtTime(160, now2 + 0.16);
+            gain2.gain.setValueAtTime(0.25, now2);
+            gain2.gain.exponentialRampToValueAtTime(0.001, now2 + 0.16);
+            osc2.connect(gain2);
+            gain2.connect(this.ctx.destination);
+            osc2.start(now2);
+            osc2.stop(now2 + 0.16);
+          }, 120);
+        } catch (e) {}
+      }
+
+      // Gentle cat meow
+      playMeow() {
+        if (this.isMuted) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(450, now);
+          osc.frequency.linearRampToValueAtTime(800, now + 0.2);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.5);
+          gain.gain.setValueAtTime(0.01, now);
+          gain.gain.linearRampToValueAtTime(0.2, now + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } catch (e) {}
+      }
+
+      // Gentle rabbit sniff / squeak
+      playSqueak() {
+        if (this.isMuted) return;
+        this.init();
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(950, now);
+          osc.frequency.exponentialRampToValueAtTime(1300, now + 0.12);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } catch (e) {}
+      }
+
+      // Eating crunchy kibble sound
+      playEating() {
+        if (this.isMuted) return;
+        this.init();
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => {
+            const freq = 120 + Math.random() * 80;
+            this.playTone(freq, 'triangle', 0.08, 0.2);
+          }, i * 90);
+        }
+      }
+
+      // Water drinking / pouring sound
+      playDrinking() {
+        if (this.isMuted) return;
+        this.init();
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const freq = 600 + Math.random() * 400;
+            this.playTone(freq, 'sine', 0.06, 0.15);
+          }, i * 110);
+        }
+      }
+
+      // Bath bubbles & splash
+      playSplash() {
+        if (this.isMuted) return;
+        this.init();
+        for (let i = 0; i < 6; i++) {
+          setTimeout(() => {
+            const freq = 400 + Math.random() * 600;
+            this.playTone(freq, 'sine', 0.1, 0.18);
+          }, i * 70);
+        }
+      }
+
+      // Brushing soft fur whoosh
+      playBrushing() {
+        if (this.isMuted) return;
+        this.init();
+        this.playTone(550, 'sine', 0.3, 0.1);
+        setTimeout(() => this.playTone(480, 'sine', 0.25, 0.08), 150);
+      }
+
+      // Affection purr or happy chirp
+      playPurr() {
+        if (this.isMuted) return;
+        this.init();
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            this.playTone(90 + (i % 2) * 20, 'triangle', 0.12, 0.12);
+          }, i * 100);
+        }
+      }
+
+      // Achievement / Reward Fanfare
+      playFanfare() {
+        if (this.isMuted) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            this.playTone(freq, 'triangle', 0.35, 0.22);
+          }, idx * 120);
+        });
+      }
+
+      // Background relaxing ambient chord arpeggios
+      startRelaxingMusic() {
+        if (this.musicPlaying || this.isMuted) return;
+        this.musicPlaying = true;
+        const chords = [
+          [261.63, 329.63, 392.00, 523.25], // C Major
+          [220.00, 261.63, 329.63, 440.00], // A Minor
+          [174.61, 220.00, 261.63, 349.23], // F Major
+          [196.00, 246.94, 293.66, 392.00]  // G Major
+        ];
+        let chordIdx = 0;
+
+        this.musicInterval = setInterval(() => {
+          if (this.isMuted) return;
+          const currentChord = chords[chordIdx % chords.length];
+          currentChord.forEach((freq, nIdx) => {
+            setTimeout(() => {
+              this.playTone(freq, 'sine', 0.8, 0.04);
+            }, nIdx * 250);
+          });
+          chordIdx++;
+        }, 2400);
+      }
+
+      stopRelaxingMusic() {
+        this.musicPlaying = false;
+        if (this.musicInterval) {
+          clearInterval(this.musicInterval);
+          this.musicInterval = null;
+        }
       }
     }
 
-    // 2. Procedural White Pomeranian 3D Rig Component
+    const PawverseSound = new PawverseAudioEngine();
+    window.PawverseSound = PawverseSound;
+
+
+    /* ===========================================================
+       2. PET ROSTER & PROCEDURAL DEFINITIONS
+       8 Diverse breeds + Unlockables with distinct color palettes & ear styles
+       =========================================================== */
+    const PET_DATABASE = [
+      {
+        id: 'golden_retriever',
+        name: 'Buddy',
+        species: 'dog',
+        breed: 'Golden Retriever',
+        avatar: '🐕',
+        color: '#E0A96D',
+        secondaryColor: '#FFF1E6',
+        earType: 'floppy',
+        tailType: 'long',
+        size: 1.0,
+        age: '8 Months',
+        personality: 'Loyal, energetic, and loves hugs',
+        gender: '♂️'
+      },
+      {
+        id: 'german_shepherd',
+        name: 'Shadow',
+        species: 'dog',
+        breed: 'German Shepherd',
+        avatar: '🐕‍🦺',
+        color: '#7F4F24',
+        secondaryColor: '#2B2D42',
+        earType: 'pointed',
+        tailType: 'bushy',
+        size: 1.1,
+        age: '1 Year',
+        personality: 'Brave, watchful, and highly protective',
+        gender: '♂️'
+      },
+      {
+        id: 'labrador',
+        name: 'Daisy',
+        species: 'dog',
+        breed: 'Labrador Retriever',
+        avatar: '🦮',
+        color: '#F4A261',
+        secondaryColor: '#FFE8D6',
+        earType: 'floppy',
+        tailType: 'long',
+        size: 1.0,
+        age: '6 Months',
+        personality: 'Playful ball-fetch champion',
+        gender: '♀️'
+      },
+      {
+        id: 'husky',
+        name: 'Kona',
+        species: 'dog',
+        breed: 'Siberian Husky',
+        avatar: '🐺',
+        color: '#6C757D',
+        secondaryColor: '#F8F9FA',
+        earType: 'pointed',
+        tailType: 'curled',
+        eyeColor: '#4EA8DE',
+        size: 1.05,
+        age: '9 Months',
+        personality: 'Vocal, adventurous, and curious',
+        gender: '♂️'
+      },
+      {
+        id: 'persian_cat',
+        name: 'Mochi',
+        species: 'cat',
+        breed: 'Persian Cat',
+        avatar: '🐱',
+        color: '#F8F9FA',
+        secondaryColor: '#FFCAD4',
+        earType: 'pointed',
+        tailType: 'curled',
+        size: 0.8,
+        age: '7 Months',
+        personality: 'Calm, regal, and loves chin scratches',
+        gender: '♀️'
+      },
+      {
+        id: 'orange_tabby',
+        name: 'Ginger',
+        species: 'cat',
+        breed: 'Orange Tabby Cat',
+        avatar: '🐈',
+        color: '#E76F51',
+        secondaryColor: '#F4A261',
+        earType: 'pointed',
+        tailType: 'long',
+        size: 0.82,
+        age: '5 Months',
+        personality: 'Playful acrobat and sunbeam sleeper',
+        gender: '♂️'
+      },
+      {
+        id: 'rabbit',
+        name: 'Clover',
+        species: 'rabbit',
+        breed: 'Holland Lop Rabbit',
+        avatar: '🐇',
+        color: '#DDBEA9',
+        secondaryColor: '#FFFFFF',
+        earType: 'rabbit',
+        tailType: 'puff',
+        size: 0.65,
+        age: '4 Months',
+        personality: 'Gentle, nibbly, and twitchy-nosed',
+        gender: '♀️'
+      },
+      {
+        id: 'shiba_inu',
+        name: 'Kiko',
+        species: 'dog',
+        breed: 'Shiba Inu (Unlockable)',
+        avatar: '🦊',
+        color: '#E07A5F',
+        secondaryColor: '#FFF1E6',
+        earType: 'pointed',
+        tailType: 'curled',
+        size: 0.9,
+        age: '10 Months',
+        personality: 'Proud, intelligent, and cheerful smile',
+        gender: '♀️'
+      }
+    ];
+
+    // Care Badges System
+    const BADGES = [
+      { id: 'first_friend', title: 'First Best Friend', icon: '🐾', desc: 'Welcome your first pet companion home', unlocked: true },
+      { id: 'master_chef', title: 'Master Chef', icon: '🍖', desc: 'Feed 5 nutritious meals with love', count: 0, target: 5, unlocked: false },
+      { id: 'hydrated', title: 'Pure Spring', icon: '💧', desc: 'Provide cool refreshing water 3 times', count: 0, target: 3, unlocked: false },
+      { id: 'splish_splash', title: 'Splish Splash', icon: '🛁', desc: 'Give your pet a warm bubble bath', count: 0, target: 2, unlocked: false },
+      { id: 'fur_stylist', title: 'Fluffy & Shiny', icon: '🪮', desc: 'Groom and brush fur 3 times', count: 0, target: 3, unlocked: false },
+      { id: 'fetch_champ', title: 'Fetch Champion', icon: '🎾', desc: 'Play 3 rounds of fetch with the ball', count: 0, target: 3, unlocked: false },
+      { id: 'trick_genius', title: 'Trick Academy Master', icon: '⭐', desc: 'Practice all 5 tricks', count: 0, target: 5, unlocked: false },
+      { id: 'soul_bond', title: 'Eternal Soulmate', icon: '💖', desc: 'Reach Tier 5 Soulmate bonding level', unlocked: false }
+    ];
+
+    // Pet Accessories
+    const ACCESSORIES = [
+      { id: 'none', title: 'Natural Coat', icon: '✨', unlocked: true },
+      { id: 'bowtie', title: 'Ruby Red Bowtie', icon: '🎀', unlocked: true },
+      { id: 'bell_collar', title: 'Golden Bell Collar', icon: '🔔', unlocked: true },
+      { id: 'party_hat', title: 'Celebration Party Hat', icon: '🎉', unlocked: false, cost: 80 },
+      { id: 'sunglasses', title: 'Cool Aviator Shades', icon: '🕶️', unlocked: false, cost: 120 }
+    ];
+
+
+    /* ===========================================================
+       3. PET PROCEDURAL RIG COMPONENT (A-Frame Component)
+       Assembles 3D body, head, snout, eyes, ears, 4 articulated legs,
+       tail, collar, accessories, and controls animation cycles.
+       =========================================================== */
     AFRAME.registerComponent('procedural-pet', {
-      schema: { breedId: { type: 'string', default: 'white_pomeranian' } },
+      schema: {
+        breedId: { type: 'string', default: 'golden_retriever' },
+        name: { type: 'string', default: 'Buddy' },
+        accessory: { type: 'string', default: 'bowtie' }
+      },
+
       init: function () {
+        this.petData = PET_DATABASE.find(p => p.id === this.data.breedId) || PET_DATABASE[0];
         this.time = 0;
-        this.animState = 'idle';
+        this.animState = 'idle'; // idle, walking, eating, sleeping, sitting, lying, spinning, rolling
+        this.targetPos = new THREE.Vector3(0, 0, -1);
+        this.velocity = new THREE.Vector3();
+        this.speed = 1.2;
+
         this.buildProceduralMesh();
       },
+
+      update: function (oldData) {
+        if (oldData.breedId !== this.data.breedId || oldData.accessory !== this.data.accessory) {
+          this.petData = PET_DATABASE.find(p => p.id === this.data.breedId) || PET_DATABASE[0];
+          this.buildProceduralMesh();
+        }
+      },
+
       buildProceduralMesh: function () {
+        // Clear previous children
+        while (this.el.object3D.children.length > 0) {
+          this.el.object3D.remove(this.el.object3D.children[0]);
+        }
+
+        const data = this.petData;
+        const mainColor = new THREE.Color(data.color);
+        const secColor = new THREE.Color(data.secondaryColor);
+        const darkColor = new THREE.Color('#2B2D42');
+        const pinkColor = new THREE.Color('#FF8FAB');
+        const eyeColor = data.eyeColor ? new THREE.Color(data.eyeColor) : new THREE.Color('#1E293B');
+
         const petRoot = new THREE.Group();
-        const whiteMat = new THREE.MeshLambertMaterial({ color: 0xFFFFFF });
-        
-        // Pomeranian Torso & Cloud Fluff Cluster
-        const body = new THREE.Mesh(new THREE.SphereGeometry(0.52, 16, 16), whiteMat);
-        body.position.set(0, 0.48, 0);
-        petRoot.add(body);
+        this.petRoot = petRoot;
 
-        // Fluffy Lion-like Ruff / Mane
-        const offsets = [[0, 0.12, 0.38, 0.32], [-0.22, 0.05, 0.32, 0.28], [0.22, 0.05, 0.32, 0.28]];
-        offsets.forEach(([x, y, z, r]) => {
-          const puff = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 10), whiteMat);
-          puff.position.set(x, y, z);
-          body.add(puff);
-        });
+        // Base Scale
+        const s = data.size || 1.0;
+        petRoot.scale.set(s, s, s);
 
-        // Curled Plume Tail over back
-        const plume = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), whiteMat);
-        plume.position.set(0, 0.28, 0.15);
-        body.add(plume);
+        // --- 1. TORSO / BODY ---
+        const bodyGeo = new THREE.SphereGeometry(0.48, 16, 16);
+        bodyGeo.scale(0.85, 0.75, 1.2);
+        const bodyMat = new THREE.MeshLambertMaterial({ color: mainColor });
+        this.bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+        this.bodyMesh.position.set(0, 0.55, 0);
+        petRoot.add(this.bodyMesh);
 
+        // Chest highlight patch
+        const chestGeo = new THREE.SphereGeometry(0.35, 12, 12);
+        chestGeo.scale(0.7, 0.7, 0.6);
+        const chestMat = new THREE.MeshLambertMaterial({ color: secColor });
+        const chestMesh = new THREE.Mesh(chestGeo, chestMat);
+        chestMesh.position.set(0, -0.05, 0.35);
+        this.bodyMesh.add(chestMesh);
+
+        // --- 2. HEAD & NECK ---
+        this.headPivot = new THREE.Group();
+        this.headPivot.position.set(0, 0.25, 0.45);
+        this.bodyMesh.add(this.headPivot);
+
+        const headGeo = new THREE.SphereGeometry(0.36, 16, 16);
+        headGeo.scale(1.0, 0.95, 1.05);
+        this.headMesh = new THREE.Mesh(headGeo, bodyMat);
+        this.headMesh.position.set(0, 0.2, 0);
+        this.headPivot.add(this.headMesh);
+
+        // Snout & Mouth
+        const snoutGeo = new THREE.BoxGeometry(0.24, 0.18, 0.28);
+        const snoutMat = new THREE.MeshLambertMaterial({ color: secColor });
+        const snoutMesh = new THREE.Mesh(snoutGeo, snoutMat);
+        snoutMesh.position.set(0, -0.06, 0.32);
+        this.headMesh.add(snoutMesh);
+
+        // Cute Nose
+        const noseGeo = new THREE.SphereGeometry(0.06, 8, 8);
+        const noseMat = new THREE.MeshLambertMaterial({ color: darkColor });
+        const noseMesh = new THREE.Mesh(noseGeo, noseMat);
+        noseMesh.position.set(0, 0.05, 0.15);
+        snoutMesh.add(noseMesh);
+
+        // Tongue (Animated when happy/eating)
+        const tongueGeo = new THREE.BoxGeometry(0.1, 0.03, 0.16);
+        const tongueMat = new THREE.MeshLambertMaterial({ color: pinkColor });
+        this.tongueMesh = new THREE.Mesh(tongueGeo, tongueMat);
+        this.tongueMesh.position.set(0, -0.08, 0.12);
+        this.tongueMesh.rotation.x = 0.2;
+        snoutMesh.add(this.tongueMesh);
+
+        // Eyes (Left & Right)
+        const eyeGeo = new THREE.SphereGeometry(0.06, 8, 8);
+        const eyeMat = new THREE.MeshLambertMaterial({ color: eyeColor });
+        const eyePupilGeo = new THREE.SphereGeometry(0.02, 6, 6);
+        const eyePupilMat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#FFFFFF') });
+
+        this.leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+        this.leftEye.position.set(-0.16, 0.1, 0.28);
+        const lPupil = new THREE.Mesh(eyePupilGeo, eyePupilMat);
+        lPupil.position.set(0.01, 0.02, 0.05);
+        this.leftEye.add(lPupil);
+        this.headMesh.add(this.leftEye);
+
+        this.rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+        this.rightEye.position.set(0.16, 0.1, 0.28);
+        const rPupil = new THREE.Mesh(eyePupilGeo, eyePupilMat);
+        rPupil.position.set(-0.01, 0.02, 0.05);
+        this.rightEye.add(rPupil);
+        this.headMesh.add(this.rightEye);
+
+        // --- 3. EARS (Floppy, Pointed, or Rabbit) ---
+        this.leftEar = new THREE.Group();
+        this.rightEar = new THREE.Group();
+        this.headMesh.add(this.leftEar);
+        this.headMesh.add(this.rightEar);
+
+        if (data.earType === 'pointed') {
+          const earGeo = new THREE.ConeGeometry(0.12, 0.28, 8);
+          const lEarMesh = new THREE.Mesh(earGeo, bodyMat);
+          lEarMesh.rotation.set(-0.2, 0, -0.2);
+          this.leftEar.position.set(-0.22, 0.28, 0.05);
+          this.leftEar.add(lEarMesh);
+
+          const rEarMesh = new THREE.Mesh(earGeo, bodyMat);
+          rEarMesh.rotation.set(-0.2, 0, 0.2);
+          this.rightEar.position.set(0.22, 0.28, 0.05);
+          this.rightEar.add(rEarMesh);
+        } else if (data.earType === 'rabbit') {
+          const rEarGeo = new THREE.CylinderGeometry(0.06, 0.08, 0.55, 8);
+          const lEarMesh = new THREE.Mesh(rEarGeo, bodyMat);
+          lEarMesh.rotation.set(-0.3, 0, -0.15);
+          this.leftEar.position.set(-0.14, 0.38, -0.05);
+          this.leftEar.add(lEarMesh);
+
+          const rEarMesh = new THREE.Mesh(rEarGeo, bodyMat);
+          rEarMesh.rotation.set(-0.3, 0, 0.15);
+          this.rightEar.position.set(0.14, 0.38, -0.05);
+          this.rightEar.add(rEarMesh);
+        } else {
+          // Floppy dog ears
+          const fEarGeo = new THREE.BoxGeometry(0.12, 0.32, 0.08);
+          const lEarMesh = new THREE.Mesh(fEarGeo, bodyMat);
+          lEarMesh.rotation.set(0.2, 0, 0.3);
+          this.leftEar.position.set(-0.28, 0.12, 0.05);
+          this.leftEar.add(lEarMesh);
+
+          const rEarMesh = new THREE.Mesh(fEarGeo, bodyMat);
+          rEarMesh.rotation.set(0.2, 0, -0.3);
+          this.rightEar.position.set(0.28, 0.12, 0.05);
+          this.rightEar.add(rEarMesh);
+        }
+
+        // --- 4. LEGS (4 Articulated limbs for walking/sitting) ---
+        const legGeo = new THREE.CylinderGeometry(0.09, 0.08, 0.45, 10);
+        const pawGeo = new THREE.SphereGeometry(0.1, 8, 8);
+        pawGeo.scale(1, 0.6, 1.2);
+        const legMat = new THREE.MeshLambertMaterial({ color: secColor });
+
+        const createLeg = (x, z) => {
+          const pivot = new THREE.Group();
+          pivot.position.set(x, -0.15, z);
+          const legMesh = new THREE.Mesh(legGeo, legMat);
+          legMesh.position.set(0, -0.2, 0);
+          pivot.add(legMesh);
+
+          const pawMesh = new THREE.Mesh(pawGeo, legMat);
+          pawMesh.position.set(0, -0.4, 0.06);
+          pivot.add(pawMesh);
+
+          this.bodyMesh.add(pivot);
+          return pivot;
+        };
+
+        this.legFL = createLeg(-0.24, 0.3);  // Front Left
+        this.legFR = createLeg(0.24, 0.3);   // Front Right
+        this.legBL = createLeg(-0.24, -0.35); // Back Left
+        this.legBR = createLeg(0.24, -0.35);  // Back Right
+
+        // --- 5. TAIL (Animated wagging) ---
+        this.tailPivot = new THREE.Group();
+        this.tailPivot.position.set(0, 0.15, -0.5);
+        this.bodyMesh.add(this.tailPivot);
+
+        if (data.tailType === 'puff') {
+          const puffGeo = new THREE.SphereGeometry(0.15, 8, 8);
+          const puffMesh = new THREE.Mesh(puffGeo, snoutMat);
+          this.tailPivot.add(puffMesh);
+        } else if (data.tailType === 'curled') {
+          const cTailGeo = new THREE.TorusGeometry(0.18, 0.06, 8, 12, Math.PI * 1.2);
+          const cTailMesh = new THREE.Mesh(cTailGeo, bodyMat);
+          cTailMesh.rotation.set(0, Math.PI / 2, 0);
+          this.tailPivot.add(cTailMesh);
+        } else {
+          // Long/Bushy tail
+          const tGeo = new THREE.CylinderGeometry(0.05, 0.08, 0.48, 8);
+          const tMesh = new THREE.Mesh(tGeo, bodyMat);
+          tMesh.position.set(0, 0.18, -0.15);
+          tMesh.rotation.x = -0.7;
+          this.tailPivot.add(tMesh);
+        }
+
+        // --- 6. ACCESSORIES (Bowtie, Collar, Party Hat, Sunglasses) ---
+        this.buildAccessory(this.data.accessory);
+
+        // Add root to entity
         this.el.object3D.add(petRoot);
+      },
+
+      buildAccessory: function (accId) {
+        if (!accId || accId === 'none') return;
+
+        if (accId === 'bowtie') {
+          const bGeoL = new THREE.ConeGeometry(0.08, 0.14, 6);
+          const bGeoR = new THREE.ConeGeometry(0.08, 0.14, 6);
+          const bMat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#E63946') });
+
+          const bowtie = new THREE.Group();
+          const lWing = new THREE.Mesh(bGeoL, bMat);
+          lWing.rotation.z = Math.PI / 2;
+          lWing.position.x = -0.07;
+          bowtie.add(lWing);
+
+          const rWing = new THREE.Mesh(bGeoR, bMat);
+          rWing.rotation.z = -Math.PI / 2;
+          rWing.position.x = 0.07;
+          bowtie.add(rWing);
+
+          const centerKnot = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), bMat);
+          bowtie.add(centerKnot);
+
+          bowtie.position.set(0, 0.08, 0.48);
+          this.bodyMesh.add(bowtie);
+        } else if (accId === 'bell_collar') {
+          const collarGeo = new THREE.TorusGeometry(0.24, 0.03, 8, 16);
+          const collarMat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#E76F51') });
+          const collar = new THREE.Mesh(collarGeo, collarMat);
+          collar.rotation.x = Math.PI / 2;
+          collar.position.set(0, 0.12, 0.38);
+
+          const bell = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 8), new THREE.MeshLambertMaterial({ color: new THREE.Color('#FFD166') }));
+          bell.position.set(0, -0.22, 0);
+          collar.add(bell);
+
+          this.bodyMesh.add(collar);
+        } else if (accId === 'party_hat') {
+          const hatGeo = new THREE.ConeGeometry(0.16, 0.4, 12);
+          const hatMat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#7209B7') });
+          const hat = new THREE.Mesh(hatGeo, hatMat);
+          hat.position.set(0, 0.45, 0);
+          this.headMesh.add(hat);
+        } else if (accId === 'sunglasses') {
+          const sGeo = new THREE.BoxGeometry(0.4, 0.1, 0.04);
+          const sMat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#111111') });
+          const shades = new THREE.Mesh(sGeo, sMat);
+          shades.position.set(0, 0.12, 0.32);
+          this.headMesh.add(shades);
+        }
+      },
+
+      setAnimationState: function (state, duration = 0) {
+        this.animState = state;
+        if (duration > 0) {
+          setTimeout(() => {
+            if (this.animState === state) {
+              this.animState = 'idle';
+            }
+          }, duration);
+        }
+      },
+
+      tick: function (time, timeDelta) {
+        if (!this.petRoot) return;
+        const dt = (timeDelta || 16) / 1000;
+        this.time += dt;
+
+        // Tail wagging is continuous, frequency increases when happy
+        const happiness = window.PawverseApp ? window.PawverseApp.petStats.happiness : 80;
+        const wagSpeed = 6 + (happiness / 100) * 8;
+        if (this.tailPivot) {
+          this.tailPivot.rotation.y = Math.sin(this.time * wagSpeed) * 0.45;
+        }
+
+        // Breathing idle motion
+        const breath = Math.sin(this.time * 2.5) * 0.03;
+        this.bodyMesh.scale.set(0.85 + breath, 0.75 + breath * 0.5, 1.2);
+
+        // State Machine Animations
+        switch (this.animState) {
+          case 'idle':
+            this.animateIdle();
+            break;
+
+          case 'walking':
+            this.animateWalk(dt);
+            break;
+
+          case 'sitting':
+            this.animateSit();
+            break;
+
+          case 'lying':
+            this.animateLie();
+            break;
+
+          case 'eating':
+            this.animateEat();
+            break;
+
+          case 'sleeping':
+            this.animateSleep();
+            break;
+
+          case 'spinning':
+            this.animateSpin(dt);
+            break;
+
+          case 'rolling':
+            this.animateRoll(dt);
+            break;
+        }
+      },
+
+      animateIdle: function () {
+        // Natural leg reset
+        this.legFL.rotation.x = 0;
+        this.legFR.rotation.x = 0;
+        this.legBL.rotation.x = 0;
+        this.legBR.rotation.x = 0;
+        this.bodyMesh.position.y = 0.55;
+        this.bodyMesh.rotation.set(0, 0, 0);
+
+        // Head gentle looking around
+        if (this.headPivot) {
+          this.headPivot.rotation.y = Math.sin(this.time * 0.8) * 0.2;
+          this.headPivot.rotation.x = Math.sin(this.time * 1.2) * 0.08;
+        }
+        if (this.tongueMesh) {
+          this.tongueMesh.scale.set(1, 1, 0.8 + Math.sin(this.time * 5) * 0.3);
+        }
+      },
+
+      animateWalk: function (dt) {
+        // Leg swing gait cycle
+        const walkFreq = 9;
+        const legSwing = Math.sin(this.time * walkFreq) * 0.55;
+        this.legFL.rotation.x = legSwing;
+        this.legFR.rotation.x = -legSwing;
+        this.legBL.rotation.x = -legSwing;
+        this.legBR.rotation.x = legSwing;
+
+        // Subtle torso bob
+        this.bodyMesh.position.y = 0.55 + Math.abs(Math.sin(this.time * walkFreq)) * 0.06;
+
+        // Move towards target position if not arrived
+        const currentPos = this.el.object3D.position;
+        const dist = currentPos.distanceTo(this.targetPos);
+
+        if (dist > 0.3) {
+          // Look at target
+          const angle = Math.atan2(this.targetPos.x - currentPos.x, this.targetPos.z - currentPos.z);
+          this.el.object3D.rotation.y = angle;
+
+          // Step forward
+          const moveDist = this.speed * dt;
+          currentPos.x += Math.sin(angle) * moveDist;
+          currentPos.z += Math.cos(angle) * moveDist;
+        } else {
+          this.animState = 'idle';
+        }
+      },
+
+      animateSit: function () {
+        this.bodyMesh.position.y = 0.42;
+        this.bodyMesh.rotation.x = -0.32;
+        this.legBL.rotation.x = 1.2;
+        this.legBR.rotation.x = 1.2;
+        this.legFL.rotation.x = -0.3;
+        this.legFR.rotation.x = -0.3;
+        if (this.headPivot) this.headPivot.rotation.x = 0.35; // Looking eagerly up!
+      },
+
+      animateLie: function () {
+        this.bodyMesh.position.y = 0.28;
+        this.bodyMesh.rotation.x = 0;
+        this.legFL.rotation.x = 1.4;
+        this.legFR.rotation.x = 1.4;
+        this.legBL.rotation.x = 1.4;
+        this.legBR.rotation.x = 1.4;
+        if (this.headPivot) this.headPivot.rotation.x = -0.15;
+      },
+
+      animateEat: function () {
+        // Head dips up and down into bowl
+        const eatFreq = 8;
+        if (this.headPivot) {
+          this.headPivot.rotation.x = 0.5 + Math.sin(this.time * eatFreq) * 0.25;
+        }
+        if (this.tongueMesh) {
+          this.tongueMesh.scale.z = 1.0 + Math.abs(Math.sin(this.time * eatFreq)) * 0.8;
+        }
+      },
+
+      animateSleep: function () {
+        this.animateLie();
+        // Slow deep breathing
+        const deepBreath = Math.sin(this.time * 1.2) * 0.06;
+        this.bodyMesh.scale.set(0.85 + deepBreath, 0.75 + deepBreath, 1.2);
+        if (this.headPivot) this.headPivot.rotation.x = -0.3;
+      },
+
+      animateSpin: function (dt) {
+        this.el.object3D.rotation.y += dt * 8;
+        this.bodyMesh.position.y = 0.65 + Math.abs(Math.sin(this.time * 12)) * 0.15;
+      },
+
+      animateRoll: function (dt) {
+        this.bodyMesh.position.y = 0.35;
+        this.bodyMesh.rotation.z += dt * 7;
+      },
+
+      moveTo: function (x, z, onDone) {
+        this.targetPos.set(x, 0, z);
+        this.animState = 'walking';
+        this.onWalkDone = onDone;
       }
+    });
+
+
+    /* ===========================================================
+       4. MAIN APPLICATION ORCHESTRATOR (PAWVERSE APP)
+       State management, stats decay & replenishment, adoption,
+       bonding tier calculations, VR controls, and UI binding.
+       =========================================================== */
+    class PawverseController {
+      constructor() {
+        this.currentPet = PET_DATABASE[0];
+        this.petStats = {
+          happiness: 85,
+          hunger: 75,
+          thirst: 80,
+          energy: 90,
+          cleanliness: 78,
+          health: 95,
+          bond: 55, // 0 - 100
+          lovePoints: 120
+        };
+
+        this.badges = BADGES;
+        this.accessories = ACCESSORIES;
+        this.activeAccessory = 'bowtie';
+        this.ballInFlight = false;
+        this.statsTickTimer = null;
+        this.autonomousTimer = null;
+
+        // Camera locations for quick-travel
+        this.locations = {
+          'living-room': { x: 0, y: 1.6, z: 2, rotY: 0 },
+          'garden': { x: 0, y: 1.6, z: 8, rotY: 0 },
+          'food-station': { x: 1.5, y: 1.6, z: -3.2, rotY: -20 },
+          'bath-station': { x: 5.5, y: 1.6, z: -2.2, rotY: -35 },
+          'vet-corner': { x: 6.5, y: 1.6, z: 4.5, rotY: 160 },
+          'bed-area': { x: -6.5, y: 1.6, z: -5.5, rotY: 45 }
+        };
+      }
+
+      init() {
+        this.renderAdoptionModal();
+        this.renderBadgesModal();
+        this.renderWardrobeModal();
+        this.updateHUD();
+        this.setupKeyboardShortcuts();
+        this.startAutonomousBehavior();
+        this.startStatDecayLoop();
+
+        // Attach pet component to scene companion
+        const companionEl = document.getElementById('pet-companion');
+        if (companionEl) {
+          companionEl.setAttribute('procedural-pet', `breedId: ${this.currentPet.id}; accessory: ${this.activeAccessory}`);
+        }
+      }
+
+      startExperience(isVR) {
+        const welcome = document.getElementById('welcome-screen');
+        if (welcome) welcome.classList.add('hidden');
+
+        PawverseSound.init();
+        PawverseSound.startRelaxingMusic();
+
+        this.showToast(`Welcome to Pawverse! ${this.currentPet.name} is happy to meet you!`, '🐾');
+
+        if (isVR) {
+          const scene = document.querySelector('a-scene');
+          if (scene && scene.enterVR) {
+            scene.enterVR();
+          }
+        }
+      }
+
+      // Emotional bonding tier calculation
+      getBondingTier() {
+        const b = this.petStats.bond;
+        if (b < 20) return { title: 'New Acquaintance', color: '#6C757D', icon: '🌱' };
+        if (b < 45) return { title: 'Warm Friend', color: '#4DABF7', icon: '🤝' };
+        if (b < 70) return { title: 'Close Companion', color: '#38D9A9', icon: '⭐' };
+        if (b < 90) return { title: 'Best Friend Forever', color: '#FF7E5F', icon: '💖' };
+        return { title: 'Soulmate Eternal', color: '#D81B60', icon: '👑' };
+      }
+
+      // Update UI Meters and HUD status
+      updateHUD() {
+        const stats = this.petStats;
+        const pet = this.currentPet;
+
+        // Elements
+        document.getElementById('hud-pet-avatar').innerText = pet.avatar;
+        document.getElementById('hud-pet-name').childNodes[0].nodeValue = pet.name + ' ';
+        document.getElementById('hud-pet-breed').innerText = `${pet.breed} • ${pet.age}`;
+        document.getElementById('hud-gender-symbol').innerText = pet.gender;
+
+        // Vital bars
+        this.setBar('bar-happiness', 'val-happiness', stats.happiness);
+        this.setBar('bar-hunger', 'val-hunger', stats.hunger);
+        this.setBar('bar-thirst', 'val-thirst', stats.thirst);
+        this.setBar('bar-energy', 'val-energy', stats.energy);
+        this.setBar('bar-cleanliness', 'val-cleanliness', stats.cleanliness);
+        this.setBar('bar-health', 'val-health', stats.health);
+
+        // Bonding bar
+        const bondBar = document.getElementById('bar-bond');
+        const bondTierElem = document.getElementById('hud-bond-tier');
+        const tier = this.getBondingTier();
+        if (bondBar) bondBar.style.width = stats.bond + '%';
+        if (bondTierElem) {
+          bondTierElem.innerText = `${tier.icon} ${tier.title} (${Math.round(stats.bond)}%)`;
+          bondTierElem.style.color = tier.color;
+        }
+
+        // Dynamic Mood feedback
+        const moodElem = document.getElementById('hud-pet-mood');
+        if (moodElem) {
+          if (stats.hunger < 30) {
+            moodElem.innerText = '🍖 A little hungry, looking for a snack';
+            moodElem.style.background = '#FFF3BF';
+            moodElem.style.color = '#F59F00';
+          } else if (stats.energy < 25) {
+            moodElem.innerText = '💤 Sleepy & yawning, ready for a nap';
+            moodElem.style.background = '#E7F5FF';
+            moodElem.style.color = '#1C7ED6';
+          } else if (stats.cleanliness < 30) {
+            moodElem.innerText = '🛁 Coat needs a nice warm bubble bath';
+            moodElem.style.background = '#F3F0FF';
+            moodElem.style.color = '#7950F2';
+          } else if (stats.happiness > 80 && stats.bond > 60) {
+            moodElem.innerText = '🥰 Super loved & wonderfully content!';
+            moodElem.style.background = '#EBFBEE';
+            moodElem.style.color = '#2B8A3E';
+          } else {
+            moodElem.innerText = '😊 Feeling playful & peaceful';
+            moodElem.style.background = '#E8F5E9';
+            moodElem.style.color = '#2E7D32';
+          }
+        }
+
+        // Love points modal
+        const lpElem = document.getElementById('modal-love-points');
+        if (lpElem) lpElem.innerText = `💖 ${stats.lovePoints} Love Points`;
+      }
+
+      setBar(barId, valId, value) {
+        const bar = document.getElementById(barId);
+        const val = document.getElementById(valId);
+        const clamped = Math.max(0, Math.min(100, Math.round(value)));
+        if (bar) bar.style.width = clamped + '%';
+        if (val) val.innerText = clamped + '%';
+      }
+
+      // Gentle stat decay teaching ongoing responsibility and empathy
+      startStatDecayLoop() {
+        this.statsTickTimer = setInterval(() => {
+          this.petStats.hunger = Math.max(10, this.petStats.hunger - 0.4);
+          this.petStats.thirst = Math.max(10, this.petStats.thirst - 0.5);
+          this.petStats.energy = Math.max(10, this.petStats.energy - 0.3);
+          this.petStats.cleanliness = Math.max(15, this.petStats.cleanliness - 0.25);
+          
+          // Happiness is influenced by other stats
+          const avgNeeds = (this.petStats.hunger + this.petStats.thirst + this.petStats.cleanliness) / 3;
+          if (avgNeeds < 40) {
+            this.petStats.happiness = Math.max(20, this.petStats.happiness - 0.5);
+          }
+          this.updateHUD();
+        }, 6000);
+      }
+
+      // Autonomous Pet AI: Explores, approaches user when bond is high
+      startAutonomousBehavior() {
+        this.autonomousTimer = setInterval(() => {
+          const companion = document.querySelector('[procedural-pet]');
+          if (!companion || !companion.components['procedural-pet']) return;
+          const rigComp = companion.components['procedural-pet'];
+
+          // Only wander if idle
+          if (rigComp.animState !== 'idle') return;
+
+          const rand = Math.random();
+          // High bond pets frequently approach the player!
+          if (rand < 0.45 && this.petStats.bond > 40) {
+            const playerPos = document.getElementById('player-camera').object3D.position;
+            const targetX = playerPos.x + (Math.random() - 0.5) * 1.5;
+            const targetZ = playerPos.z + (Math.random() - 0.5) * 1.5;
+            rigComp.moveTo(targetX, targetZ);
+          } else if (rand < 0.8) {
+            // Gentle wandering within home/garden
+            const wanderX = (Math.random() - 0.5) * 6;
+            const wanderZ = (Math.random() - 0.5) * 6;
+            rigComp.moveTo(wanderX, wanderZ);
+          }
+        }, 8000);
+      }
+
+      // Interactive Pet Care Actions
+      doCareAction(action) {
+        const companion = document.querySelector('[procedural-pet]');
+        const rigComp = companion ? companion.components['procedural-pet'] : null;
+
+        switch (action) {
+          case 'feed':
+            this.teleportTo('food-station');
+            if (rigComp) {
+              rigComp.moveTo(1.5, -4.2, () => {
+                rigComp.setAnimationState('eating', 3000);
+              });
+            }
+            PawverseSound.playEating();
+            this.petStats.hunger = Math.min(100, this.petStats.hunger + 35);
+            this.petStats.happiness = Math.min(100, this.petStats.happiness + 15);
+            this.addLovePoints(15);
+            this.checkBadgeProgress('master_chef');
+            this.spawnParticles('hearts', 1.5, 0.8, -4.2);
+            this.showToast(`${this.currentPet.name} happily munched fresh nutritious food!`, '🍖');
+            break;
+
+          case 'drink':
+            this.teleportTo('food-station');
+            if (rigComp) {
+              rigComp.moveTo(2.1, -4.2, () => {
+                rigComp.setAnimationState('eating', 2500);
+              });
+            }
+            PawverseSound.playDrinking();
+            this.petStats.thirst = Math.min(100, this.petStats.thirst + 40);
+            this.petStats.energy = Math.min(100, this.petStats.energy + 10);
+            this.addLovePoints(10);
+            this.checkBadgeProgress('hydrated');
+            this.spawnParticles('sparkles', 2.1, 0.8, -4.2);
+            this.showToast(`${this.currentPet.name} lapped up fresh cool water!`, '💧');
+            break;
+
+          case 'bath':
+            this.teleportTo('bath-station');
+            if (rigComp) {
+              rigComp.moveTo(6.0, -4.0, () => {
+                rigComp.setAnimationState('eating', 3500);
+              });
+            }
+            PawverseSound.playSplash();
+            this.petStats.cleanliness = 100;
+            this.petStats.happiness = Math.min(100, this.petStats.happiness + 20);
+            this.addLovePoints(25);
+            this.checkBadgeProgress('splish_splash');
+            this.spawnParticles('bubbles', 6.0, 1.2, -4.0);
+            this.showToast(`Warm bubble bath! ${this.currentPet.name} is squeaky clean!`, '🛁');
+            break;
+
+          case 'groom':
+            this.teleportTo('bath-station');
+            if (rigComp) {
+              rigComp.setAnimationState('sitting', 3000);
+            }
+            PawverseSound.playBrushing();
+            this.petStats.cleanliness = Math.min(100, this.petStats.cleanliness + 30);
+            this.petStats.happiness = Math.min(100, this.petStats.happiness + 15);
+            this.addLovePoints(15);
+            this.checkBadgeProgress('fur_stylist');
+            this.spawnParticles('sparkles', companion.object3D.position.x, 0.9, companion.object3D.position.z);
+            this.showToast(`Brushed fur smoothly! ${this.currentPet.name} leans in with delight.`, '🪮');
+            break;
+
+          case 'pet':
+            if (rigComp) {
+              rigComp.setAnimationState('sitting', 2500);
+            }
+            if (this.currentPet.species === 'cat') {
+              PawverseSound.playMeow();
+              PawverseSound.playPurr();
+            } else if (this.currentPet.species === 'rabbit') {
+              PawverseSound.playSqueak();
+            } else {
+              PawverseSound.playBark();
+            }
+            this.petStats.happiness = Math.min(100, this.petStats.happiness + 20);
+            this.petStats.bond = Math.min(100, this.petStats.bond + 3);
+            this.addLovePoints(10);
+            const pPos = companion.object3D.position;
+            this.spawnParticles('hearts', pPos.x, pPos.y + 0.8, pPos.z);
+            this.showToast(`Gentle caress! ${this.currentPet.name} feels deeply cherished.`, '❤️');
+            break;
+
+          case 'sleep':
+            this.teleportTo('bed-area');
+            if (rigComp) {
+              rigComp.moveTo(-7.0, -7.0, () => {
+                rigComp.setAnimationState('sleeping', 5000);
+              });
+            }
+            PawverseSound.playTone(392, 'sine', 0.8, 0.1);
+            setTimeout(() => PawverseSound.playTone(329, 'sine', 0.8, 0.08), 400);
+            this.petStats.energy = 100;
+            this.petStats.health = Math.min(100, this.petStats.health + 10);
+            this.spawnParticles('zzz', -7.0, 1.0, -7.0);
+            this.showToast(`${this.currentPet.name} curled up warmly and is having sweet dreams...`, '💤');
+            break;
+
+          case 'vet':
+            this.teleportTo('vet-corner');
+            if (rigComp) {
+              rigComp.moveTo(7.0, 3.0, () => {
+                rigComp.setAnimationState('sitting', 3000);
+              });
+            }
+            PawverseSound.playFanfare();
+            this.petStats.health = 100;
+            this.petStats.happiness = Math.min(100, this.petStats.happiness + 10);
+            this.addLovePoints(30);
+            this.spawnParticles('sparkles', 7.0, 1.4, 3.0);
+            this.showToast(`Veterinary check complete! All vitals are radiant & healthy!`, '🩺');
+            break;
+
+          case 'fetch':
+            this.throwBall();
+            break;
+        }
+
+        this.updateHUD();
+      }
+
+      // Throw Ball & Autonomous Pet Fetch AI
+      throwBall() {
+        if (this.ballInFlight) return;
+        this.ballInFlight = true;
+
+        const ball = document.getElementById('interactive-ball');
+        const playerCam = document.getElementById('player-camera');
+        const companion = document.querySelector('[procedural-pet]');
+        const rigComp = companion ? companion.components['procedural-pet'] : null;
+
+        // Calculate landing spot in front of player/camera
+        const pPos = playerCam.object3D.position;
+        const targetX = pPos.x + (Math.random() - 0.5) * 4;
+        const targetZ = pPos.z + 4 + Math.random() * 3;
+
+        // Ball throw arc animation
+        let progress = 0;
+        const startX = pPos.x;
+        const startY = 1.2;
+        const startZ = pPos.z;
+
+        PawverseSound.playTone(450, 'sine', 0.15, 0.15);
+        this.showToast('You threw the ball! Watch them chase it!', '🎾');
+
+        const ballInterval = setInterval(() => {
+          progress += 0.05;
+          const currentX = startX + (targetX - startX) * progress;
+          const currentZ = startZ + (targetZ - startZ) * progress;
+          const currentY = startY + Math.sin(progress * Math.PI) * 2.0 - progress * (startY - 0.25);
+
+          ball.setAttribute('position', `${currentX} ${Math.max(0.25, currentY)} ${currentZ}`);
+
+          if (progress >= 1.0) {
+            clearInterval(ballInterval);
+            PawverseSound.playTone(280, 'triangle', 0.1, 0.2); // Bounce thud
+
+            // Pet runs to fetch ball!
+            if (rigComp) {
+              rigComp.speed = 2.4; // Run fast
+              rigComp.moveTo(targetX, targetZ, () => {
+                // Pick up ball
+                ball.setAttribute('position', `${targetX} 0.7 ${targetZ}`);
+                PawverseSound.playBark();
+
+                // Trot proudly back to player
+                setTimeout(() => {
+                  rigComp.moveTo(pPos.x, pPos.z + 1.2, () => {
+                    // Drop ball at player's feet
+                    ball.setAttribute('position', `${pPos.x} 0.25 ${pPos.z + 1.2}`);
+                    rigComp.speed = 1.2;
+                    rigComp.setAnimationState('sitting', 2000);
+                    PawverseSound.playBark();
+
+                    this.ballInFlight = false;
+                    this.petStats.happiness = Math.min(100, this.petStats.happiness + 25);
+                    this.petStats.bond = Math.min(100, this.petStats.bond + 5);
+                    this.addLovePoints(20);
+                    this.checkBadgeProgress('fetch_champ');
+                    this.spawnParticles('hearts', pPos.x, 1.0, pPos.z + 1.2);
+                    this.showToast(`${this.currentPet.name} fetched the ball back for you! Good boy!`, '🎾');
+                    this.updateHUD();
+                  });
+                }, 600);
+              });
+            } else {
+              this.ballInFlight = false;
+            }
+          }
+        }, 30);
+      }
+
+      // Teach Trick with Positive Reinforcement
+      teachTrick(trickName) {
+        this.closeModal('tricks-modal');
+        const companion = document.querySelector('[procedural-pet]');
+        const rigComp = companion ? companion.components['procedural-pet'] : null;
+
+        if (!rigComp) return;
+
+        switch (trickName) {
+          case 'sit':
+            rigComp.setAnimationState('sitting', 3500);
+            PawverseSound.playTone(523.25, 'triangle', 0.2, 0.2);
+            this.showToast(`"Sit!" — ${this.currentPet.name} sits attentively!`, '⭐');
+            break;
+          case 'down':
+            rigComp.setAnimationState('lying', 3500);
+            PawverseSound.playTone(440, 'triangle', 0.2, 0.2);
+            this.showToast(`"Lie Down!" — ${this.currentPet.name} lies peacefully flat.`, '⭐');
+            break;
+          case 'spin':
+            rigComp.setAnimationState('spinning', 2500);
+            PawverseSound.playTone(659.25, 'triangle', 0.25, 0.2);
+            this.showToast(`"Spin!" — ${this.currentPet.name} pirouettes with joy!`, '🌀');
+            break;
+          case 'rollover':
+            rigComp.setAnimationState('rolling', 2500);
+            PawverseSound.playTone(587.33, 'triangle', 0.25, 0.2);
+            this.showToast(`"Roll Over!" — A playful tummy roll!`, '🤸');
+            break;
+          case 'speak':
+            if (this.currentPet.species === 'cat') PawverseSound.playMeow();
+            else PawverseSound.playBark();
+            rigComp.setAnimationState('sitting', 2000);
+            this.showToast(`"Speak!" — ${this.currentPet.name} barks a loving greeting!`, '🗣️');
+            break;
+        }
+
+        this.addLovePoints(15);
+        this.checkBadgeProgress('trick_genius');
+        const pos = companion.object3D.position;
+        this.spawnParticles('sparkles', pos.x, pos.y + 0.9, pos.z);
+        this.updateHUD();
+      }
+
+      // Teleport navigation
+      teleportTo(zoneKey) {
+        const dest = this.locations[zoneKey];
+        if (!dest) return;
+
+        const rig = document.getElementById('rig');
+        if (rig) {
+          rig.setAttribute('position', `${dest.x} 0 ${dest.z}`);
+        }
+
+        // Highlight active zone button
+        document.querySelectorAll('.zone-pill').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = Array.from(document.querySelectorAll('.zone-pill')).find(b => b.innerText.toLowerCase().includes(zoneKey.split('-')[0]));
+        if (activeBtn) activeBtn.classList.add('active');
+
+        PawverseSound.playTone(520, 'sine', 0.1, 0.1);
+      }
+
+      // Floating Particle FX Spawner (Hearts, Bubbles, Sparkles, Zzz)
+      spawnParticles(type, x, y, z) {
+        const container = document.getElementById('particles-container');
+        if (!container) return;
+
+        const emojis = {
+          hearts: ['❤️', '💖', '💕', '✨'],
+          bubbles: ['🫧', '🫧', '💧', '✨'],
+          sparkles: ['⭐', '✨', '🌟', '💛'],
+          zzz: ['💤', 'Z', 'z', '✨']
+        };
+
+        const list = emojis[type] || emojis.hearts;
+
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const p = document.createElement('a-text');
+            const emoji = list[Math.floor(Math.random() * list.length)];
+            const offset = (Math.random() - 0.5) * 0.8;
+            p.setAttribute('value', emoji);
+            p.setAttribute('align', 'center');
+            p.setAttribute('position', `${x + offset} ${y} ${z + offset}`);
+            p.setAttribute('scale', '0.7 0.7 0.7');
+            p.setAttribute('look-at', '#player-camera');
+            container.appendChild(p);
+
+            // Animate upwards
+            let curY = y;
+            let opacity = 1.0;
+            const floatInterval = setInterval(() => {
+              curY += 0.04;
+              opacity -= 0.03;
+              p.setAttribute('position', `${x + offset} ${curY} ${z + offset}`);
+              if (opacity <= 0) {
+                clearInterval(floatInterval);
+                if (p.parentNode) p.parentNode.removeChild(p);
+              }
+            }, 30);
+          }, i * 120);
+        }
+      }
+
+      // Add love points and check tier progression
+      addLovePoints(pts) {
+        this.petStats.lovePoints += pts;
+        this.petStats.bond = Math.min(100, this.petStats.bond + pts * 0.15);
+
+        if (this.petStats.bond >= 90) {
+          const badge = this.badges.find(b => b.id === 'soul_bond');
+          if (badge && !badge.unlocked) {
+            badge.unlocked = true;
+            PawverseSound.playFanfare();
+            this.showToast(`Milestone Reached: Soulmate Eternal with ${this.currentPet.name}!`, '👑');
+          }
+        }
+      }
+
+      // Track badges
+      checkBadgeProgress(badgeId) {
+        const b = this.badges.find(item => item.id === badgeId);
+        if (b && !b.unlocked) {
+          b.count = (b.count || 0) + 1;
+          if (b.count >= b.target) {
+            b.unlocked = true;
+            PawverseSound.playFanfare();
+            this.showToast(`Care Badge Unlocked: ${b.title}!`, b.icon);
+            this.renderBadgesModal();
+          }
+        }
+      }
+
+      // Modal management
+      openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.add('active');
+        PawverseSound.playTone(400, 'sine', 0.1, 0.1);
+      }
+
+      closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove('active');
+        PawverseSound.playTone(320, 'sine', 0.1, 0.08);
+      }
+
+      // Render Adoption Pet Cards
+      renderAdoptionModal() {
+        const grid = document.getElementById('adoption-pet-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        PET_DATABASE.forEach(pet => {
+          const card = document.createElement('div');
+          card.className = `pet-card ${pet.id === this.currentPet.id ? 'selected' : ''}`;
+          card.onclick = () => {
+            document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.tempAdoptPet = pet;
+            const input = document.getElementById('input-adopt-name');
+            if (input) input.value = pet.name;
+            PawverseSound.playTone(480, 'sine', 0.1, 0.1);
+          };
+
+          card.innerHTML = `
+            <div class="pet-card-avatar">${pet.avatar}</div>
+            <div class="pet-card-name">${pet.name} ${pet.gender}</div>
+            <div class="pet-card-breed">${pet.breed}</div>
+            <div class="pet-card-desc">${pet.personality}</div>
+            <div class="pet-traits">
+              <span class="trait-tag">${pet.species.toUpperCase()}</span>
+              <span class="trait-tag">${pet.age}</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Confirm pet adoption
+      confirmAdoption() {
+        const chosen = this.tempAdoptPet || this.currentPet;
+        const nameInput = document.getElementById('input-adopt-name');
+        const customName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : chosen.name;
+
+        this.currentPet = { ...chosen, name: customName };
+        this.closeModal('adoption-modal');
+
+        // Swap 3D pet rig
+        const companionEl = document.getElementById('pet-companion');
+        if (companionEl) {
+          companionEl.setAttribute('procedural-pet', `breedId: ${this.currentPet.id}; name: ${this.currentPet.name}; accessory: ${this.activeAccessory}`);
+        }
+
+        PawverseSound.playFanfare();
+        this.showToast(`Congratulations! You welcomed ${this.currentPet.name} into your home!`, '🐾');
+        this.updateHUD();
+      }
+
+      // Render Badges
+      renderBadgesModal() {
+        const grid = document.getElementById('badges-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        this.badges.forEach(b => {
+          const card = document.createElement('div');
+          card.className = `badge-card ${b.unlocked ? 'unlocked' : 'locked'}`;
+          card.innerHTML = `
+            <div class="badge-icon">${b.icon}</div>
+            <div class="badge-title">${b.title}</div>
+            <div class="badge-desc">${b.desc}</div>
+            ${b.target && !b.unlocked ? `<div style="font-size:10px; font-weight:700; color:#FF7E5F; margin-top:4px;">${b.count || 0} / ${b.target}</div>` : ''}
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Render Wardrobe Accessories
+      renderWardrobeModal() {
+        const grid = document.getElementById('wardrobe-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        this.accessories.forEach(acc => {
+          const card = document.createElement('div');
+          const isEquipped = this.activeAccessory === acc.id;
+          card.className = `badge-card ${acc.unlocked ? 'unlocked' : 'locked'}`;
+          card.style.cursor = 'pointer';
+          card.onclick = () => {
+            if (acc.unlocked) {
+              this.activeAccessory = acc.id;
+              const companionEl = document.getElementById('pet-companion');
+              if (companionEl) {
+                companionEl.setAttribute('procedural-pet', `breedId: ${this.currentPet.id}; accessory: ${this.activeAccessory}`);
+              }
+              this.renderWardrobeModal();
+              PawverseSound.playTone(550, 'sine', 0.15, 0.15);
+              this.showToast(`Equipped: ${acc.title}!`, acc.icon);
+            } else if (this.petStats.lovePoints >= acc.cost) {
+              this.petStats.lovePoints -= acc.cost;
+              acc.unlocked = true;
+              this.activeAccessory = acc.id;
+              const companionEl = document.getElementById('pet-companion');
+              if (companionEl) {
+                companionEl.setAttribute('procedural-pet', `breedId: ${this.currentPet.id}; accessory: ${this.activeAccessory}`);
+              }
+              PawverseSound.playFanfare();
+              this.renderWardrobeModal();
+              this.updateHUD();
+              this.showToast(`Unlocked and equipped: ${acc.title}!`, acc.icon);
+            } else {
+              this.showToast(`Need ${acc.cost} Love Points to unlock! Keep caring!`, '🔒');
+            }
+          };
+
+          card.innerHTML = `
+            <div class="badge-icon">${acc.icon}</div>
+            <div class="badge-title">${acc.title}</div>
+            <div class="badge-desc">${isEquipped ? '✅ Currently Wearing' : (acc.unlocked ? 'Click to wear' : `Unlock for ${acc.cost} Love Points`)}</div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // Toast feedback helper
+      showToast(text, icon = '🐾') {
+        const toast = document.getElementById('feedback-toast');
+        const iconElem = document.getElementById('toast-icon');
+        const textElem = document.getElementById('toast-text');
+        if (!toast) return;
+
+        iconElem.innerText = icon;
+        textElem.innerText = text;
+        toast.classList.add('show');
+
+        clearTimeout(this.toastTimeout);
+        this.toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3200);
+      }
+
+      // Desktop keyboard controls
+      setupKeyboardShortcuts() {
+        window.addEventListener('keydown', (e) => {
+          // If modal open or typing input, don't trigger shortcuts
+          if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+
+          switch (e.key.toLowerCase()) {
+            case 'e':
+              this.doCareAction('pet');
+              break;
+            case 'f':
+              this.doCareAction('feed');
+              break;
+            case 'g':
+              this.doCareAction('pet');
+              break;
+            case 't':
+              this.teachTrick('speak');
+              break;
+            case ' ':
+              e.preventDefault();
+              this.throwBall();
+              break;
+            case '1':
+              this.teachTrick('sit');
+              break;
+            case '2':
+              this.teachTrick('down');
+              break;
+            case '3':
+              this.teachTrick('spin');
+              break;
+            case '4':
+              this.teachTrick('rollover');
+              break;
+            case '5':
+              this.teachTrick('speak');
+              break;
+            case 'escape':
+              // Close any open modals
+              document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+              break;
+          }
+        });
+      }
+    }
+
+    // Initialize application when DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+      window.PawverseApp = new PawverseController();
+      window.PawverseApp.init();
     });
   </script>
 </body>
