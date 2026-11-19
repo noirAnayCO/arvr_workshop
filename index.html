@@ -10,7 +10,7 @@
 
   <style>
     /* -------------------------------------------------------------
-       PAWVERSE PREMIUM STYLING & RESPONSIVE UI
+       PAWVERSE STYLING & RESPONSIVE UI
        Palette: Warm Cream, Sky Blue, Pastel Sage, Soft Coral & Gold
        ------------------------------------------------------------- */
     :root {
@@ -22,8 +22,8 @@
       --pastel-green: #72EFDD;
       --text-dark: #2B2D42;
       --text-muted: #6C757D;
-      --card-bg: rgba(255, 255, 255, 0.92);
-      --card-border: rgba(255, 126, 95, 0.2);
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --card-border: rgba(255, 126, 95, 0.22);
       --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.15);
       --shadow-hover: 0 16px 42px rgba(255, 126, 95, 0.25);
       --font-main: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
@@ -377,7 +377,7 @@
       top: 80px;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: rgba(43, 45, 66, 0.92);
+      background: rgba(43, 45, 66, 0.94);
       backdrop-filter: blur(12px);
       color: white;
       padding: 12px 24px;
@@ -709,7 +709,7 @@
       position: absolute;
       bottom: 84px;
       left: 16px;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(10px);
       padding: 8px 16px;
       border-radius: 20px;
@@ -746,7 +746,7 @@
     }
 
     .welcome-card {
-      max-width: 580px;
+      max-width: 600px;
       background: white;
       padding: 40px 32px;
       border-radius: 36px;
@@ -1153,8 +1153,8 @@
       <div class="controls-grid">
         <div class="control-box">
           <h4>🥽 Meta Quest 3S VR Controls</h4>
-          <div class="control-item"><span>Left Joystick</span> <span class="kbd">Smooth Locomotion</span></div>
-          <div class="control-item"><span>Right Joystick</span> <span class="kbd">Snap Turn</span></div>
+          <div class="control-item"><span>Left Thumbstick</span> <span class="kbd">Smooth Locomotion</span></div>
+          <div class="control-item"><span>Right Thumbstick</span> <span class="kbd">Smooth Turning</span></div>
           <div class="control-item"><span>Trigger Button</span> <span class="kbd">Pet / Interact / Select</span></div>
           <div class="control-item"><span>Grip Button</span> <span class="kbd">Grab Ball &amp; Toys</span></div>
           <div class="control-item"><span>Enter VR</span> <span class="kbd">Click Goggles Icon</span></div>
@@ -1184,9 +1184,7 @@
       webxr="optionalFeatures: hit-test, local-floor">
 
       <!-- Assets Manager -->
-      <a-assets timeout="4000">
-        <!-- Procedural textures and materials initialized via script -->
-      </a-assets>
+      <a-assets timeout="4000"></a-assets>
 
       <!-- =========================================================
            LIGHTING & ATMOSPHERE
@@ -1215,17 +1213,19 @@
           </a-entity>
         </a-camera>
 
-        <!-- Meta Quest 3S Left Hand Controller -->
+        <!-- Meta Quest 3S Left Hand Controller (Locomotion & Raycast) -->
         <a-entity 
           id="left-hand" 
           laser-controls="hand: left" 
+          quest-locomotion
           raycaster="objects: .clickable; far: 15; lineColor: #FF7E5F; lineOpacity: 0.8">
         </a-entity>
 
-        <!-- Meta Quest 3S Right Hand Controller -->
+        <!-- Meta Quest 3S Right Hand Controller (Turn & Raycast) -->
         <a-entity 
           id="right-hand" 
           laser-controls="hand: right" 
+          quest-locomotion
           raycaster="objects: .clickable; far: 15; lineColor: #4EA8DE; lineOpacity: 0.8">
         </a-entity>
       </a-entity>
@@ -1261,14 +1261,10 @@
 
       <!-- Modern Cozy Sofa -->
       <a-entity position="-7 0 -3" rotation="0 90 0">
-        <!-- Sofa Base -->
         <a-box position="0 0.45 0" width="3.4" height="0.5" depth="1.2" color="#6D6875"></a-box>
-        <!-- Sofa Backrest -->
         <a-box position="0 1.1 -0.45" width="3.4" height="0.8" depth="0.3" color="#5E5866"></a-box>
-        <!-- Sofa Armrests -->
         <a-box position="-1.75 0.7 0" width="0.3" height="0.6" depth="1.2" color="#5E5866"></a-box>
         <a-box position="1.75 0.7 0" width="0.3" height="0.6" depth="1.2" color="#5E5866"></a-box>
-        <!-- Decorative Cushions -->
         <a-box position="-0.9 0.8 -0.2" rotation="10 15 0" width="0.6" height="0.6" depth="0.2" color="#FFB4A2"></a-box>
         <a-box position="0.9 0.8 -0.2" rotation="10 -15 0" width="0.6" height="0.6" depth="0.2" color="#E5989B"></a-box>
       </a-entity>
@@ -1276,6 +1272,58 @@
       <!-- Coffee Table with Pet Care Books -->
       <a-box position="-3 0.35 -3" width="1.8" height="0.4" depth="1.0" color="#B7B7A4"></a-box>
       <a-box position="-3 0.58 -3" width="0.5" height="0.06" depth="0.4" color="#E76F51"></a-box>
+
+      <!-- =========================================================
+           VR FLOATING 3D DASHBOARD & CARE STATION (For Meta Quest 3S)
+           Allows VR players in headset to see stats & click actions in 3D!
+           ========================================================= -->
+      <a-entity position="-1 1.5 -1.8" rotation="0 25 0">
+        <!-- 3D Stand Panel -->
+        <a-box position="0 0 0" width="2.4" height="1.6" depth="0.08" color="#FFFFFF" material="roughness: 0.4; opacity: 0.95"></a-box>
+        <a-box position="0 0 -0.05" width="2.46" height="1.66" depth="0.04" color="#FF7E5F"></a-box>
+        <!-- Stand Legs -->
+        <a-cylinder position="-0.9 -1.0 0" radius="0.04" height="1.0" color="#495057"></a-cylinder>
+        <a-cylinder position="0.9 -1.0 0" radius="0.04" height="1.0" color="#495057"></a-cylinder>
+
+        <!-- Dynamic 3D Header -->
+        <a-text id="vr-stat-title" value="🐾 PAWVERSE CARE STATION" align="center" position="0 0.65 0.05" width="3.6" color="#FF7E5F"></a-text>
+        <a-text id="vr-stat-name" value="Buddy (Golden Retriever)" align="center" position="0 0.46 0.05" width="3.2" color="#2B2D42"></a-text>
+        <a-text id="vr-stat-bond" value="💖 Bond: Best Friend (Tier 4)" align="center" position="0 0.30 0.05" width="3.0" color="#D81B60"></a-text>
+
+        <!-- 3D Interactive Care Action Buttons for VR Controllers -->
+        <!-- Row 1: Feed & Drink -->
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.75 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#FFE3E3">
+          <a-text value="🍖 FEED" align="center" position="0 0 0.04" width="2.4" color="#E03131"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#E7F5FF">
+          <a-text value="💧 WATER" align="center" position="0 0 0.04" width="2.4" color="#1971C2"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('pet')" position="0.75 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#F3F0FF">
+          <a-text value="👋 PET" align="center" position="0 0 0.04" width="2.4" color="#6741D9"></a-text>
+        </a-box>
+
+        <!-- Row 2: Bath, Groom & Sleep -->
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="-0.75 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#E6FCF5">
+          <a-text value="🛁 BATH" align="center" position="0 0 0.04" width="2.4" color="#099268"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="0 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#FFF9DB">
+          <a-text value="🪮 BRUSH" align="center" position="0 0 0.04" width="2.4" color="#F08C00"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0.75 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#EBFBEE">
+          <a-text value="💤 SLEEP" align="center" position="0 0 0.04" width="2.4" color="#2F9E44"></a-text>
+        </a-box>
+
+        <!-- Row 3: Fetch Ball, Vet Check & Teach Tricks -->
+        <a-box class="clickable" onclick="window.PawverseApp.throwBall()" position="-0.75 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#FFF4E6">
+          <a-text value="🎾 FETCH" align="center" position="0 0 0.04" width="2.4" color="#D9480F"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#E3FAFC">
+          <a-text value="🩺 VET" align="center" position="0 0 0.04" width="2.4" color="#0C8599"></a-text>
+        </a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.teachTrick('spin')" position="0.75 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#F8F9FA">
+          <a-text value="⭐ TRICK" align="center" position="0 0 0.04" width="2.4" color="#495057"></a-text>
+        </a-box>
+      </a-entity>
 
       <!-- =========================================================
            ZONE 1: PET SLEEPING AREA (Plush Cushion Bed & Night Lamp)
@@ -1301,14 +1349,12 @@
         
         <!-- Food Bowl (Clickable) -->
         <a-cylinder id="bowl-food" class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.6 0.15 0" radius="0.45" height="0.25" color="#E63946">
-          <!-- Kibble food contents -->
           <a-sphere id="food-pellets" position="0 0.08 0" radius="0.38" scale="1 0.35 1" color="#8B5A2B"></a-sphere>
         </a-cylinder>
         <a-text value="🍖 Food Bowl" align="center" position="-0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
 
         <!-- Fresh Water Fountain Bowl (Clickable) -->
         <a-cylinder id="bowl-water" class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0.6 0.15 0" radius="0.45" height="0.25" color="#457B9D">
-          <!-- Water surface -->
           <a-cylinder id="water-surface" position="0 0.08 0" radius="0.4" height="0.05" color="#A2D2FF" material="opacity: 0.85; transparent: true"></a-cylinder>
         </a-cylinder>
         <a-text value="💧 Fresh Water" align="center" position="0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
@@ -1352,7 +1398,6 @@
            ZONE 5: OUTDOOR GARDEN & PLAYGROUND (Fetch, Obstacles, Trees)
            ========================================================= -->
       <a-entity id="zone-garden" position="0 0 10">
-        <!-- White Picket Fence Enclosure -->
         <!-- Front Fence Posts -->
         <a-box position="-8 0.6 8" width="0.1" height="1.2" depth="0.1" color="#FFFFFF"></a-box>
         <a-box position="0 0.6 8" width="16" height="0.15" depth="0.05" color="#FFFFFF"></a-box>
@@ -1373,20 +1418,17 @@
           <a-text value="Play Tunnel" align="center" position="0 1.6 0" color="#495057" width="3"></a-text>
         </a-entity>
 
-        <!-- Procedural Beautiful Garden Trees -->
-        <!-- Tree 1 -->
+        <!-- Procedural Garden Trees -->
         <a-entity position="-10 0 6">
           <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
           <a-sphere position="0 3.5 0" radius="1.8" color="#40916C"></a-sphere>
           <a-sphere position="0.5 4.3 0.3" radius="1.3" color="#52B788"></a-sphere>
         </a-entity>
-        <!-- Tree 2 -->
         <a-entity position="10 0 6">
           <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
           <a-sphere position="0 3.5 0" radius="1.8" color="#40916C"></a-sphere>
           <a-sphere position="-0.4 4.2 -0.2" radius="1.3" color="#52B788"></a-sphere>
         </a-entity>
-        <!-- Tree 3 -->
         <a-entity position="-12 0 -2">
           <a-cylinder position="0 1.5 0" radius="0.35" height="3" color="#8B5A2B"></a-cylinder>
           <a-sphere position="0 3.5 0" radius="1.8" color="#2D6A4F"></a-sphere>
@@ -1426,7 +1468,7 @@
            THE DYNAMIC PROCEDURAL 3D PET RIG
            ========================================================= -->
       <a-entity id="pet-companion" position="0 0 -1" rotation="0 0 0" class="clickable" onclick="window.PawverseApp.doCareAction('pet')">
-        <!-- The procedural model mesh is assembled inside the PetRig component -->
+        <!-- Procedural model assembled inside PetRig component -->
       </a-entity>
 
     </a-scene>
@@ -1821,6 +1863,40 @@
       { id: 'sunglasses', title: 'Cool Aviator Shades', icon: '🕶️', unlocked: false, cost: 120 }
     ];
 
+    /* ===========================================================
+       META QUEST 3S LOCOMOTION COMPONENT
+       Thumbstick movement & turning for immersive VR
+       =========================================================== */
+    AFRAME.registerComponent('quest-locomotion', {
+      init: function () {
+        this.rig = document.getElementById('rig');
+        this.speed = 0.08;
+        this.rotSpeed = 0.035;
+        this.el.addEventListener('axismove', (evt) => {
+          if (!evt.detail || !evt.detail.axis) return;
+          const [axisX, axisY] = evt.detail.axis;
+          const isLeft = this.el.id === 'left-hand';
+
+          if (isLeft) {
+            // Left Thumbstick: Smooth Locomotion
+            if (Math.abs(axisY) > 0.1 || Math.abs(axisX) > 0.1) {
+              const cam = document.getElementById('player-camera');
+              if (!cam || !this.rig) return;
+              const angle = cam.object3D.rotation.y;
+              this.rig.object3D.position.x += (Math.sin(angle) * (-axisY) + Math.cos(angle) * axisX) * this.speed;
+              this.rig.object3D.position.z += (Math.cos(angle) * (-axisY) - Math.sin(angle) * axisX) * this.speed;
+            }
+          } else {
+            // Right Thumbstick: Smooth Turning
+            if (Math.abs(axisX) > 0.15) {
+              if (this.rig) {
+                this.rig.object3D.rotation.y -= axisX * this.rotSpeed;
+              }
+            }
+          }
+        });
+      }
+    });
 
     /* ===========================================================
        3. PET PROCEDURAL RIG COMPONENT (A-Frame Component)
@@ -2106,7 +2182,7 @@
         const dt = (timeDelta || 16) / 1000;
         this.time += dt;
 
-        // Tail wagging is continuous, frequency increases when happy
+        // Tail wagging frequency increases when happy
         const happiness = window.PawverseApp ? window.PawverseApp.petStats.happiness : 80;
         const wagSpeed = 6 + (happiness / 100) * 8;
         if (this.tailPivot) {
@@ -2199,6 +2275,11 @@
           currentPos.z += Math.cos(angle) * moveDist;
         } else {
           this.animState = 'idle';
+          if (this.onWalkDone) {
+            const cb = this.onWalkDone;
+            this.onWalkDone = null;
+            cb();
+          }
         }
       },
 
@@ -2254,7 +2335,7 @@
       moveTo: function (x, z, onDone) {
         this.targetPos.set(x, 0, z);
         this.animState = 'walking';
-        this.onWalkDone = onDone;
+        this.onWalkDone = onDone || null;
       }
     });
 
@@ -2367,6 +2448,12 @@
           bondTierElem.innerText = `${tier.icon} ${tier.title} (${Math.round(stats.bond)}%)`;
           bondTierElem.style.color = tier.color;
         }
+
+        // Update In-Scene 3D VR Board
+        const vrName = document.getElementById('vr-stat-name');
+        const vrBond = document.getElementById('vr-stat-bond');
+        if (vrName) vrName.setAttribute('value', `${pet.name} (${pet.breed})`);
+        if (vrBond) vrBond.setAttribute('value', `${tier.icon} Bond: ${tier.title} (${Math.round(stats.bond)}%)`);
 
         // Dynamic Mood feedback
         const moodElem = document.getElementById('hud-pet-mood');
@@ -2732,7 +2819,6 @@
             p.setAttribute('align', 'center');
             p.setAttribute('position', `${x + offset} ${y} ${z + offset}`);
             p.setAttribute('scale', '0.7 0.7 0.7');
-            p.setAttribute('look-at', '#player-camera');
             container.appendChild(p);
 
             // Animate upwards
