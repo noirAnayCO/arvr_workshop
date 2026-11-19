@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -37,7 +38,8 @@
       -webkit-user-select: none;
     }
 
-    body, html {
+    body,
+    html {
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -132,13 +134,13 @@
       border-radius: 50%;
       background: var(--card-bg);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(0,0,0,0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       color: var(--text-dark);
     }
@@ -261,7 +263,7 @@
     .bonding-meter-box {
       margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px dashed rgba(0,0,0,0.1);
+      border-top: 1px dashed rgba(0, 0, 0, 0.1);
     }
 
     .bonding-header {
@@ -354,18 +356,19 @@
     .zone-pill {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0, 0, 0, 0.06);
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       transition: all 0.2s ease;
       color: #495057;
     }
 
-    .zone-pill:hover, .zone-pill.active {
+    .zone-pill:hover,
+    .zone-pill.active {
       background: #4EA8DE;
       color: white;
       transform: translateY(-1px);
@@ -384,7 +387,7 @@
       border-radius: 30px;
       font-size: 14px;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       opacity: 0;
       pointer-events: none;
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -566,7 +569,7 @@
       background: white;
       padding: 16px;
       border-radius: 20px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
 
     .name-input-group {
@@ -716,8 +719,8 @@
       font-size: 11px;
       font-weight: 600;
       color: #495057;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.06);
       pointer-events: auto;
     }
 
@@ -810,13 +813,27 @@
 
     /* Keyframe animations */
     @keyframes gentle-pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.12); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.12);
+      }
     }
 
     @keyframes float-soft {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
     }
 
     /* Mobile Responsive tweaks */
@@ -826,9 +843,11 @@
         top: 70px;
         left: 16px;
       }
+
       .desktop-hint {
         display: none;
       }
+
       .bottom-dock {
         overflow-x: auto;
         justify-content: flex-start;
@@ -850,20 +869,23 @@
       <p class="welcome-tagline">Where Every Paw Finds Love</p>
 
       <div class="welcome-quote">
-        “Animals cannot express their needs in words, but they can express them through their actions. Give them care, patience, kindness, and unconditional love.”
+        “Animals cannot express their needs in words, but they can express them through their actions. Give them care,
+        patience, kindness, and unconditional love.”
       </div>
 
       <div class="welcome-btns">
         <button id="btn-start-desktop" class="btn-primary" onclick="window.PawverseApp.startExperience(false)">
           <span>🚀</span> Enter Pawverse (Desktop 3D)
         </button>
-        <button id="btn-start-vr" class="btn-primary" style="background: linear-gradient(135deg, #4EA8DE, #56CFE1);" onclick="window.PawverseApp.startExperience(true)">
+        <button id="btn-start-vr" class="btn-primary" style="background: linear-gradient(135deg, #4EA8DE, #56CFE1);"
+          onclick="window.PawverseApp.startExperience(true)">
           <span>🥽</span> Meta Quest 3S VR Mode
         </button>
       </div>
 
       <div class="vr-notice-pill">
-        <span>🎮</span> Optimized for Meta Quest 3S (Controllers + Hand Interactions) &amp; Windows Desktop (WASD + Mouse)
+        <span>🎮</span> Optimized for Meta Quest 3S (Controllers + Hand Interactions) &amp; Windows Desktop (WASD +
+        Mouse)
       </div>
     </div>
   </div>
@@ -895,11 +917,16 @@
 
       <!-- Utility Icons -->
       <div class="top-actions interactive">
-        <button class="icon-btn" title="Pet Adoption Centre" onclick="window.PawverseApp.openModal('adoption-modal')">🏠</button>
-        <button class="icon-btn" title="Care Badges &amp; Love Points" onclick="window.PawverseApp.openModal('badges-modal')">🏆</button>
-        <button class="icon-btn" title="Accessories Wardrobe" onclick="window.PawverseApp.openModal('wardrobe-modal')">🎀</button>
-        <button class="icon-btn" title="Controls Guide" onclick="window.PawverseApp.openModal('controls-modal')">❓</button>
-        <button id="btn-audio-toggle" class="icon-btn" title="Toggle Sound" onclick="window.PawverseSound.toggleMute()">🔊</button>
+        <button class="icon-btn" title="Pet Adoption Centre"
+          onclick="window.PawverseApp.openModal('adoption-modal')">🏠</button>
+        <button class="icon-btn" title="Care Badges &amp; Love Points"
+          onclick="window.PawverseApp.openModal('badges-modal')">🏆</button>
+        <button class="icon-btn" title="Accessories Wardrobe"
+          onclick="window.PawverseApp.openModal('wardrobe-modal')">🎀</button>
+        <button class="icon-btn" title="Controls Guide"
+          onclick="window.PawverseApp.openModal('controls-modal')">❓</button>
+        <button id="btn-audio-toggle" class="icon-btn" title="Toggle Sound"
+          onclick="window.PawverseSound.toggleMute()">🔊</button>
       </div>
     </div>
 
@@ -977,7 +1004,8 @@
 
     <!-- Onscreen Controls Hint (Desktop) -->
     <div class="desktop-hint">
-      <span>⌨️ <b>W,A,S,D</b>: Walk | <b>Mouse</b>: Look | <b>Click/E</b>: Interact | <b>F</b>: Feed | <b>G</b>: Pet | <b>Space</b>: Fetch Ball</span>
+      <span>⌨️ <b>W,A,S,D</b>: Walk | <b>Mouse</b>: Look | <b>Click/E</b>: Interact | <b>F</b>: Feed | <b>G</b>: Pet |
+        <b>Space</b>: Fetch Ball</span>
     </div>
 
     <!-- Bottom Action Dock (Interactive Pet Care) -->
@@ -992,7 +1020,8 @@
         <span class="btn-label">Fresh Water</span>
       </button>
 
-      <button class="action-btn" title="Gentle warm bath with bubbles" onclick="window.PawverseApp.doCareAction('bath')">
+      <button class="action-btn" title="Gentle warm bath with bubbles"
+        onclick="window.PawverseApp.doCareAction('bath')">
         <span class="btn-icon">🛁</span>
         <span class="btn-label">Warm Bath</span>
       </button>
@@ -1012,7 +1041,8 @@
         <span class="btn-label">Play Fetch</span>
       </button>
 
-      <button class="action-btn" title="Teach sit, roll, spin tricks" onclick="window.PawverseApp.openModal('tricks-modal')">
+      <button class="action-btn" title="Teach sit, roll, spin tricks"
+        onclick="window.PawverseApp.openModal('tricks-modal')">
         <span class="btn-icon">⭐</span>
         <span class="btn-label">Teach Tricks</span>
       </button>
@@ -1055,7 +1085,8 @@
       <div class="adopt-action-bar">
         <div class="name-input-group">
           <label for="input-adopt-name">Give Your Companion A Name</label>
-          <input type="text" id="input-adopt-name" placeholder="Enter pet name (e.g. Sunny, Milo, Luna)..." maxlength="16">
+          <input type="text" id="input-adopt-name" placeholder="Enter pet name (e.g. Sunny, Milo, Luna)..."
+            maxlength="16">
         </div>
         <button class="btn-primary" onclick="window.PawverseApp.confirmAdoption()">
           <span>🏠</span> Welcome Home!
@@ -1074,7 +1105,8 @@
       </div>
 
       <div style="text-align: center; margin-bottom: 20px;">
-        <span style="font-size: 28px; font-weight: 800; color: #FF7E5F;" id="modal-love-points">💖 120 Love Points</span>
+        <span style="font-size: 28px; font-weight: 800; color: #FF7E5F;" id="modal-love-points">💖 120 Love
+          Points</span>
       </div>
 
       <div class="badges-grid" id="badges-grid">
@@ -1177,9 +1209,7 @@
        A-FRAME 3D SCENE & PROCEDURAL PET RIGGING
        ============================================================= -->
   <div id="scene-container">
-    <a-scene 
-      id="main-scene" 
-      background="color: #BAE6FD" 
+    <a-scene id="main-scene" background="color: #BAE6FD"
       renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true; highRefreshRate: true"
       webxr="optionalFeatures: hit-test, local-floor">
 
@@ -1190,11 +1220,13 @@
            LIGHTING & ATMOSPHERE
            ========================================================= -->
       <!-- Soft Warm Sun Directional Light -->
-      <a-entity light="type: directional; color: #FFF8E7; intensity: 1.25; castShadow: true" position="15 25 10"></a-entity>
+      <a-entity light="type: directional; color: #FFF8E7; intensity: 1.25; castShadow: true"
+        position="15 25 10"></a-entity>
       <!-- Ambient Skylight -->
       <a-entity light="type: ambient; color: #E0F2FE; intensity: 0.85"></a-entity>
       <!-- Interior Living Room Warm Fireplace Point Light -->
-      <a-entity id="fireplace-light" light="type: point; color: #FFA94D; intensity: 1.5; distance: 12" position="-4 1.2 -4"></a-entity>
+      <a-entity id="fireplace-light" light="type: point; color: #FFA94D; intensity: 1.5; distance: 12"
+        position="-4 1.2 -4"></a-entity>
 
       <!-- Sky Dome with gentle sunny gradient -->
       <a-sky id="paw-sky" color="#BAE6FD"></a-sky>
@@ -1204,28 +1236,20 @@
            ========================================================= -->
       <a-entity id="rig" position="0 0 2">
         <!-- Camera (Desktop Mouse Look + Headset View) -->
-        <a-camera id="player-camera" position="0 1.6 0" look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 20">
+        <a-camera id="player-camera" position="0 1.6 0" look-controls="pointerLockEnabled: false"
+          wasd-controls="acceleration: 20">
           <!-- Laser Cursor for desktop interaction -->
-          <a-entity 
-            id="desktop-cursor"
-            cursor="fuse: false; rayOrigin: mouse"
-            raycaster="objects: .clickable; far: 30">
+          <a-entity id="desktop-cursor" cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable; far: 30">
           </a-entity>
         </a-camera>
 
         <!-- Meta Quest 3S Left Hand Controller (Locomotion & Raycast) -->
-        <a-entity 
-          id="left-hand" 
-          laser-controls="hand: left" 
-          quest-locomotion
+        <a-entity id="left-hand" laser-controls="hand: left" quest-locomotion
           raycaster="objects: .clickable; far: 15; lineColor: #FF7E5F; lineOpacity: 0.8">
         </a-entity>
 
         <!-- Meta Quest 3S Right Hand Controller (Turn & Raycast) -->
-        <a-entity 
-          id="right-hand" 
-          laser-controls="hand: right" 
-          quest-locomotion
+        <a-entity id="right-hand" laser-controls="hand: right" quest-locomotion
           raycaster="objects: .clickable; far: 15; lineColor: #4EA8DE; lineOpacity: 0.8">
         </a-entity>
       </a-entity>
@@ -1236,13 +1260,16 @@
 
       <!-- Main Floor Ground (Living Area Wood & Garden Grass) -->
       <!-- Outdoor Grass Plane -->
-      <a-plane position="0 -0.01 0" rotation="-90 0 0" width="80" height="80" color="#7BC8A4" material="roughness: 0.9; metalness: 0.05"></a-plane>
+      <a-plane position="0 -0.01 0" rotation="-90 0 0" width="80" height="80" color="#7BC8A4"
+        material="roughness: 0.9; metalness: 0.05"></a-plane>
 
       <!-- Indoor Living Room Wooden Floor -->
-      <a-plane position="-3 0.01 -3" rotation="-90 0 0" width="14" height="14" color="#D4A373" material="roughness: 0.6"></a-plane>
+      <a-plane position="-3 0.01 -3" rotation="-90 0 0" width="14" height="14" color="#D4A373"
+        material="roughness: 0.6"></a-plane>
 
       <!-- Living Room Cozy Carpet Rug -->
-      <a-circle position="-3 0.02 -3" rotation="-90 0 0" radius="3.5" color="#FFF1E6" material="roughness: 0.8"></a-circle>
+      <a-circle position="-3 0.02 -3" rotation="-90 0 0" radius="3.5" color="#FFF1E6"
+        material="roughness: 0.8"></a-circle>
 
       <!-- Living Room Walls (Warm Cream Modern Aesthetic) -->
       <a-box position="-3 3 -10" width="14" height="6" depth="0.3" color="#FAEDCD"></a-box>
@@ -1250,14 +1277,16 @@
 
       <!-- Wall Art & Inspirational Posters -->
       <a-box position="-3 3.5 -9.8" width="3.2" height="1.8" depth="0.08" color="#333333">
-        <a-text value="PAWVERSE HOME\nWhere Love Lives" align="center" color="#FFFFFF" position="0 0 0.06" width="6"></a-text>
+        <a-text value="PAWVERSE HOME\nWhere Love Lives" align="center" color="#FFFFFF" position="0 0 0.06"
+          width="6"></a-text>
       </a-box>
 
       <!-- Fireplace Mantle & Warm Hearth -->
       <a-box position="-4 1 -9.7" width="2.6" height="2" depth="0.5" color="#DDBEA9"></a-box>
       <a-box position="-4 0.4 -9.5" width="1.6" height="1" depth="0.4" color="#2B2D42"></a-box>
       <!-- Fireplace Embers (animated pulsing flame) -->
-      <a-sphere id="fire-ember" position="-4 0.3 -9.4" radius="0.35" color="#FF6B35" material="emissive: #FF6B35; emissiveIntensity: 0.8"></a-sphere>
+      <a-sphere id="fire-ember" position="-4 0.3 -9.4" radius="0.35" color="#FF6B35"
+        material="emissive: #FF6B35; emissiveIntensity: 0.8"></a-sphere>
 
       <!-- Modern Cozy Sofa -->
       <a-entity position="-7 0 -3" rotation="0 90 0">
@@ -1279,48 +1308,61 @@
            ========================================================= -->
       <a-entity position="-1 1.5 -1.8" rotation="0 25 0">
         <!-- 3D Stand Panel -->
-        <a-box position="0 0 0" width="2.4" height="1.6" depth="0.08" color="#FFFFFF" material="roughness: 0.4; opacity: 0.95"></a-box>
+        <a-box position="0 0 0" width="2.4" height="1.6" depth="0.08" color="#FFFFFF"
+          material="roughness: 0.4; opacity: 0.95"></a-box>
         <a-box position="0 0 -0.05" width="2.46" height="1.66" depth="0.04" color="#FF7E5F"></a-box>
         <!-- Stand Legs -->
         <a-cylinder position="-0.9 -1.0 0" radius="0.04" height="1.0" color="#495057"></a-cylinder>
         <a-cylinder position="0.9 -1.0 0" radius="0.04" height="1.0" color="#495057"></a-cylinder>
 
         <!-- Dynamic 3D Header -->
-        <a-text id="vr-stat-title" value="🐾 PAWVERSE CARE STATION" align="center" position="0 0.65 0.05" width="3.6" color="#FF7E5F"></a-text>
-        <a-text id="vr-stat-name" value="Buddy (Golden Retriever)" align="center" position="0 0.46 0.05" width="3.2" color="#2B2D42"></a-text>
-        <a-text id="vr-stat-bond" value="💖 Bond: Best Friend (Tier 4)" align="center" position="0 0.30 0.05" width="3.0" color="#D81B60"></a-text>
+        <a-text id="vr-stat-title" value="🐾 PAWVERSE CARE STATION" align="center" position="0 0.65 0.05" width="3.6"
+          color="#FF7E5F"></a-text>
+        <a-text id="vr-stat-name" value="Buddy (Golden Retriever)" align="center" position="0 0.46 0.05" width="3.2"
+          color="#2B2D42"></a-text>
+        <a-text id="vr-stat-bond" value="💖 Bond: Best Friend (Tier 4)" align="center" position="0 0.30 0.05"
+          width="3.0" color="#D81B60"></a-text>
 
         <!-- 3D Interactive Care Action Buttons for VR Controllers -->
         <!-- Row 1: Feed & Drink -->
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.75 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#FFE3E3">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.75 0.05 0.08"
+          width="0.65" height="0.25" depth="0.06" color="#FFE3E3">
           <a-text value="🍖 FEED" align="center" position="0 0 0.04" width="2.4" color="#E03131"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#E7F5FF">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0 0.05 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#E7F5FF">
           <a-text value="💧 WATER" align="center" position="0 0 0.04" width="2.4" color="#1971C2"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('pet')" position="0.75 0.05 0.08" width="0.65" height="0.25" depth="0.06" color="#F3F0FF">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('pet')" position="0.75 0.05 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#F3F0FF">
           <a-text value="👋 PET" align="center" position="0 0 0.04" width="2.4" color="#6741D9"></a-text>
         </a-box>
 
         <!-- Row 2: Bath, Groom & Sleep -->
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="-0.75 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#E6FCF5">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="-0.75 -0.28 0.08"
+          width="0.65" height="0.25" depth="0.06" color="#E6FCF5">
           <a-text value="🛁 BATH" align="center" position="0 0 0.04" width="2.4" color="#099268"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="0 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#FFF9DB">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="0 -0.28 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#FFF9DB">
           <a-text value="🪮 BRUSH" align="center" position="0 0 0.04" width="2.4" color="#F08C00"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0.75 -0.28 0.08" width="0.65" height="0.25" depth="0.06" color="#EBFBEE">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0.75 -0.28 0.08"
+          width="0.65" height="0.25" depth="0.06" color="#EBFBEE">
           <a-text value="💤 SLEEP" align="center" position="0 0 0.04" width="2.4" color="#2F9E44"></a-text>
         </a-box>
 
         <!-- Row 3: Fetch Ball, Vet Check & Teach Tricks -->
-        <a-box class="clickable" onclick="window.PawverseApp.throwBall()" position="-0.75 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#FFF4E6">
+        <a-box class="clickable" onclick="window.PawverseApp.throwBall()" position="-0.75 -0.6 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#FFF4E6">
           <a-text value="🎾 FETCH" align="center" position="0 0 0.04" width="2.4" color="#D9480F"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#E3FAFC">
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 -0.6 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#E3FAFC">
           <a-text value="🩺 VET" align="center" position="0 0 0.04" width="2.4" color="#0C8599"></a-text>
         </a-box>
-        <a-box class="clickable" onclick="window.PawverseApp.teachTrick('spin')" position="0.75 -0.6 0.08" width="0.65" height="0.25" depth="0.06" color="#F8F9FA">
+        <a-box class="clickable" onclick="window.PawverseApp.teachTrick('spin')" position="0.75 -0.6 0.08" width="0.65"
+          height="0.25" depth="0.06" color="#F8F9FA">
           <a-text value="⭐ TRICK" align="center" position="0 0 0.04" width="2.4" color="#495057"></a-text>
         </a-box>
       </a-entity>
@@ -1330,8 +1372,10 @@
            ========================================================= -->
       <a-entity id="zone-bed" position="-7 0 -7">
         <!-- Pet Donut Cushion Bed -->
-        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.15 0" radius="1.3" height="0.3" color="#FFCDB2"></a-cylinder>
-        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.18 0" radius="1.0" height="0.2" color="#FFB4A2"></a-cylinder>
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.15 0"
+          radius="1.3" height="0.3" color="#FFCDB2"></a-cylinder>
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('sleep')" position="0 0.18 0"
+          radius="1.0" height="0.2" color="#FFB4A2"></a-cylinder>
         <!-- Soft Pillow -->
         <a-sphere position="0.5 0.25 0" radius="0.35" scale="1 0.4 1" color="#FFFFFF"></a-sphere>
         <a-text value="🛏️ Cozy Pet Bed" align="center" position="0 1.2 0" color="#495057" width="4"></a-text>
@@ -1346,16 +1390,19 @@
       <a-entity id="zone-dining" position="1.5 0 -5">
         <!-- Station Tray Mat -->
         <a-plane position="0 0.02 0" rotation="-90 0 0" width="2.4" height="1.4" color="#A8DADC"></a-plane>
-        
+
         <!-- Food Bowl (Clickable) -->
-        <a-cylinder id="bowl-food" class="clickable" onclick="window.PawverseApp.doCareAction('feed')" position="-0.6 0.15 0" radius="0.45" height="0.25" color="#E63946">
+        <a-cylinder id="bowl-food" class="clickable" onclick="window.PawverseApp.doCareAction('feed')"
+          position="-0.6 0.15 0" radius="0.45" height="0.25" color="#E63946">
           <a-sphere id="food-pellets" position="0 0.08 0" radius="0.38" scale="1 0.35 1" color="#8B5A2B"></a-sphere>
         </a-cylinder>
         <a-text value="🍖 Food Bowl" align="center" position="-0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
 
         <!-- Fresh Water Fountain Bowl (Clickable) -->
-        <a-cylinder id="bowl-water" class="clickable" onclick="window.PawverseApp.doCareAction('drink')" position="0.6 0.15 0" radius="0.45" height="0.25" color="#457B9D">
-          <a-cylinder id="water-surface" position="0 0.08 0" radius="0.4" height="0.05" color="#A2D2FF" material="opacity: 0.85; transparent: true"></a-cylinder>
+        <a-cylinder id="bowl-water" class="clickable" onclick="window.PawverseApp.doCareAction('drink')"
+          position="0.6 0.15 0" radius="0.45" height="0.25" color="#457B9D">
+          <a-cylinder id="water-surface" position="0 0.08 0" radius="0.4" height="0.05" color="#A2D2FF"
+            material="opacity: 0.85; transparent: true"></a-cylinder>
         </a-cylinder>
         <a-text value="💧 Fresh Water" align="center" position="0.6 0.8 0" color="#2B2D42" width="3.5"></a-text>
       </a-entity>
@@ -1365,16 +1412,21 @@
            ========================================================= -->
       <a-entity id="zone-bath" position="6 0 -4">
         <!-- Bathtub Structure -->
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="0 0.5 0" width="2.4" height="0.8" depth="1.6" color="#FFFFFF" material="roughness: 0.3"></a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('bath')" position="0 0.5 0" width="2.4"
+          height="0.8" depth="1.6" color="#FFFFFF" material="roughness: 0.3"></a-box>
         <!-- Tub Interior Water Surface -->
-        <a-plane position="0 0.7 0" rotation="-90 0 0" width="2.0" height="1.2" color="#72EFDD" material="opacity: 0.75; transparent: true"></a-plane>
+        <a-plane position="0 0.7 0" rotation="-90 0 0" width="2.0" height="1.2" color="#72EFDD"
+          material="opacity: 0.75; transparent: true"></a-plane>
         <!-- Shower Head Stand -->
         <a-cylinder position="1.1 1.2 0" radius="0.05" height="1.6" color="#CED4DA"></a-cylinder>
         <a-sphere position="0.9 2.0 0" radius="0.2" color="#CED4DA"></a-sphere>
         <!-- Grooming Brush Stand -->
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 0.5 0" width="0.6" height="0.8" depth="0.6" color="#DEE2E6"></a-box>
-        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 1.0 0" radius="0.1" height="0.4" rotation="0 0 45" color="#FF7E5F"></a-cylinder>
-        <a-text value="🛁 Bath &amp; Grooming Spa" align="center" position="0 2.2 0" color="#2B2D42" width="4.5"></a-text>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 0.5 0" width="0.6"
+          height="0.8" depth="0.6" color="#DEE2E6"></a-box>
+        <a-cylinder class="clickable" onclick="window.PawverseApp.doCareAction('groom')" position="-1.5 1.0 0"
+          radius="0.1" height="0.4" rotation="0 0 45" color="#FF7E5F"></a-cylinder>
+        <a-text value="🛁 Bath &amp; Grooming Spa" align="center" position="0 2.2 0" color="#2B2D42"
+          width="4.5"></a-text>
       </a-entity>
 
       <!-- =========================================================
@@ -1382,14 +1434,16 @@
            ========================================================= -->
       <a-entity id="zone-vet" position="7 0 3">
         <!-- Examination Medical Table -->
-        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 0.6 0" width="2.6" height="1.0" depth="1.5" color="#F8F9FA"></a-box>
+        <a-box class="clickable" onclick="window.PawverseApp.doCareAction('vet')" position="0 0.6 0" width="2.6"
+          height="1.0" depth="1.5" color="#F8F9FA"></a-box>
         <!-- Medical Cross Emblems -->
         <a-box position="0 0.6 0.76" width="0.6" height="0.2" depth="0.02" color="#E63946"></a-box>
         <a-box position="0 0.6 0.76" width="0.2" height="0.6" depth="0.02" color="#E63946"></a-box>
         <!-- Medical Scanner Monitor -->
         <a-box position="1.0 1.4 0" width="0.8" height="0.6" depth="0.1" color="#343A40"></a-box>
         <a-plane position="1.0 1.4 0.06" width="0.7" height="0.5" color="#20C997">
-          <a-text value="VET SCANNER\nHEALTH: OPTIMAL" align="center" color="#FFFFFF" position="0 0 0.01" width="1.8"></a-text>
+          <a-text value="VET SCANNER\nHEALTH: OPTIMAL" align="center" color="#FFFFFF" position="0 0 0.01"
+            width="1.8"></a-text>
         </a-plane>
         <a-text value="🩺 Vet Corner" align="center" position="0 1.8 0" color="#2B2D42" width="4.0"></a-text>
       </a-entity>
@@ -1414,7 +1468,8 @@
 
         <!-- Agility Play Tunnel -->
         <a-entity position="4 0 5" rotation="0 30 0">
-          <a-cylinder position="0 0.6 0" radius="0.7" height="2.4" open-ended="true" rotation="90 0 0" color="#06D6A0" material="side: double"></a-cylinder>
+          <a-cylinder position="0 0.6 0" radius="0.7" height="2.4" open-ended="true" rotation="90 0 0" color="#06D6A0"
+            material="side: double"></a-cylinder>
           <a-text value="Play Tunnel" align="center" position="0 1.6 0" color="#495057" width="3"></a-text>
         </a-entity>
 
@@ -1448,15 +1503,8 @@
       <!-- =========================================================
            INTERACTIVE TOY: FETCH TENNIS BALL (Physics Arc & Chase)
            ========================================================= -->
-      <a-sphere 
-        id="interactive-ball" 
-        class="clickable" 
-        onclick="window.PawverseApp.throwBall()"
-        position="0 0.25 1" 
-        radius="0.22" 
-        color="#CCFF00" 
-        material="roughness: 0.5" 
-        shadow>
+      <a-sphere id="interactive-ball" class="clickable" onclick="window.PawverseApp.throwBall()" position="0 0.25 1"
+        radius="0.22" color="#CCFF00" material="roughness: 0.5" shadow>
       </a-sphere>
 
       <!-- =========================================================
@@ -1467,7 +1515,8 @@
       <!-- =========================================================
            THE DYNAMIC PROCEDURAL 3D PET RIG
            ========================================================= -->
-      <a-entity id="pet-companion" position="0 0 -1" rotation="0 0 0" class="clickable" onclick="window.PawverseApp.doCareAction('pet')">
+      <a-entity id="pet-companion" position="0 0 -1" rotation="0 0 0" class="clickable"
+        onclick="window.PawverseApp.doCareAction('pet')">
         <!-- Procedural model assembled inside PetRig component -->
       </a-entity>
 
@@ -1566,7 +1615,7 @@
             osc2.start(now2);
             osc2.stop(now2 + 0.16);
           }, 120);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       // Gentle cat meow
@@ -1588,7 +1637,7 @@
           gain.connect(this.ctx.destination);
           osc.start(now);
           osc.stop(now + 0.5);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       // Gentle rabbit sniff / squeak
@@ -1608,7 +1657,7 @@
           gain.connect(this.ctx.destination);
           osc.start(now);
           osc.stop(now + 0.12);
-        } catch (e) {}
+        } catch (e) { }
       }
 
       // Eating crunchy kibble sound
@@ -2501,7 +2550,7 @@
           this.petStats.thirst = Math.max(10, this.petStats.thirst - 0.5);
           this.petStats.energy = Math.max(10, this.petStats.energy - 0.3);
           this.petStats.cleanliness = Math.max(15, this.petStats.cleanliness - 0.25);
-          
+
           // Happiness is influenced by other stats
           const avgNeeds = (this.petStats.hunger + this.petStats.thirst + this.petStats.cleanliness) / 3;
           if (avgNeeds < 40) {
@@ -3068,4 +3117,5 @@
     });
   </script>
 </body>
+
 </html>
